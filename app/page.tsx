@@ -29,7 +29,7 @@ export default function Home() {
 
 
       {featuredVehicles.length > 0 && (
-        <section className="featured-listings container py-20 reveal">
+        <section className="featured-listings container py-20">
           <div className="section-header mb-16">
             <h2 className="section-title">Öne Çıkan <span className="text-neon">İlanlar</span></h2>
             <p className="text-secondary">Huzur Otomotiv güvencesiyle güncel stoklarımız.</p>
@@ -37,7 +37,7 @@ export default function Home() {
 
           <div className="listings-grid">
             {featuredVehicles.map((vehicle: any, idx) => (
-              <div key={vehicle.id} className={`reveal stagger-${idx + 1}`}>
+              <div key={vehicle.id}>
                 <VehicleCard vehicle={vehicle} />
               </div>
             ))}
