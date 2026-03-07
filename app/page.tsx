@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Hero from '@/components/Hero'
-import Filters from '@/components/Filters'
 import Features from '@/components/Features'
 import VehicleCard from '@/components/VehicleCard'
 
@@ -27,7 +26,7 @@ export default function Home() {
   return (
     <div className="home-page">
       <Hero />
-      <Filters />
+
 
       {featuredVehicles.length > 0 && (
         <section className="featured-listings container py-20 reveal">
