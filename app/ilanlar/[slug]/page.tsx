@@ -73,7 +73,7 @@ export default function VehicleDetail() {
     }
 
     return (
-        <div className="vehicle-detail-page pt-32 pb-20">
+        <div className="vehicle-detail-page pb-20" style={{ paddingTop: '120px' }}>
             <div className="container">
                 <Link href="/ilanlar" className="back-link mb-8 inline-block text-secondary hover:text-neon transition-colors">
                     ← İlanlara Dön
@@ -435,7 +435,7 @@ export default function VehicleDetail() {
                 .lightbox-overlay {
                     position: fixed;
                     inset: 0;
-                    z-index: 100;
+                    z-index: 9999;
                     background: rgba(0, 0, 0, 0.98);
                     backdrop-filter: blur(12px);
                     display: flex;
@@ -519,16 +519,37 @@ export default function VehicleDetail() {
                         opacity: 1;
                     }
                     .gallery-nav-btn {
-                        width: 40px;
-                        height: 40px;
+                        width: 36px;
+                        height: 36px;
+                        transition: none;
+                        will-change: auto;
+                    }
+                    .gallery-nav-btn svg {
+                        width: 18px;
+                        height: 18px;
+                    }
+                    .prev-btn { left: 0.5rem; }
+                    .next-btn { right: 0.5rem; }
+                    .main-image-container {
+                        border-radius: 12px;
+                    }
+                    .main-image-container:hover .main-img {
+                        transform: none;
                     }
                     .lightbox-nav-btn {
-                        width: 56px;
-                        height: 56px;
+                        width: 44px;
+                        height: 44px;
                     }
-                    .lightbox-nav-btn.prev { left: 1rem; }
-                    .lightbox-nav-btn.next { right: 1rem; }
-                    .lightbox-content { max-width: 90vw; }
+                    .lightbox-nav-btn.prev { left: 0.5rem; }
+                    .lightbox-nav-btn.next { right: 0.5rem; }
+                    .lightbox-close-btn {
+                        top: 1rem;
+                        right: 1rem;
+                    }
+                    .lightbox-content { max-width: 95vw; height: 80vh; }
+                    .description-card {
+                        padding: 1.25rem;
+                    }
                 }
             `}</style>
         </div>
