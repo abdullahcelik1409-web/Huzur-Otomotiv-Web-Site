@@ -1,0 +1,249 @@
+:root {
+  /* Color Palette - Premium Dark & Neon Green */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #141414;
+  --bg-tertiary: #1e1e1e;
+
+  --accent-neon: #ccff00;
+  /* Iconic Huzur Neon Green */
+  --accent-neon-hover: #b3e600;
+  --accent-neon-muted: rgba(204, 255, 0, 0.1);
+
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted: #666666;
+
+  --border-color: #2a2a2a;
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --neon-glow: 0 0 20px rgba(204, 255, 0, 0.2);
+
+  --font-main: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-outfit), var(--font-main);
+
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+section {
+  scroll-margin-top: 100px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Premium Utilities */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.pt-32 {
+  padding-top: 150px !important;
+}
+
+h1.section-title,
+.section-title {
+  margin-top: 40px !important;
+}
+
+@media (max-width: 768px) {
+  .pt-32 {
+    padding-top: 140px !important;
+  }
+}
+
+.text-neon {
+  color: var(--accent-neon);
+}
+
+.bg-neon {
+  background-color: var(--accent-neon);
+  color: var(--bg-primary);
+}
+
+.border-neon {
+  border: 1px solid var(--accent-neon);
+}
+
+.glass {
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+}
+
+.neon-btn {
+  background: var(--accent-neon);
+  color: var(--bg-primary);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: var(--neon-glow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.neon-btn:hover {
+  background: var(--accent-neon-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(204, 255, 0, 0.4);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 50px;
+  height: 4px;
+  background: var(--accent-neon);
+}
+
+.cta-card {
+  padding: 4rem;
+  border-radius: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.cta-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cta-content p {
+  font-size: 1.15rem;
+  opacity: 0.9;
+}
+
+.glass-btn.dark {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.listings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem;
+}
+
+/* Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.active {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.stagger-1 {
+  transition-delay: 0.1s;
+}
+
+.stagger-2 {
+  transition-delay: 0.2s;
+}
+
+.stagger-3 {
+  transition-delay: 0.3s;
+}
+
+.stagger-4 {
+  transition-delay: 0.4s;
+}
+
+@media (max-width: 992px) {
+  .cta-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 3rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+}

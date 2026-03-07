@@ -1,0 +1,48 @@
+{
+    "cars": [
+        {
+            "id": 1,
+            "slug": "2020-land-rover-range-rover-vogue-autobiography",
+            "title": "2020 Land Rover Range Rover 3.0 SDV6 Vogue Autobiography",
+            "brand": "Land Rover",
+            "model": "Range Rover",
+            "package": "Vogue Autobiography",
+            "year": 2020,
+            "price": 9750000,
+            "currency": "TRY",
+            "km": 131000,
+            "fuel": "Dizel",
+            "transmission": "Otomatik",
+            "images": [
+                "/cars/2020-range-rover-autobiography-1.png",
+                "/cars/2020-range-rover-autobiography-2.png",
+                "/cars/2020-range-rover-autobiography-3.png",
+                "/cars/2020-range-rover-autobiography-4.png",
+                "/cars/2020-range-rover-autobiography-5.png",
+                "/cars/2020-range-rover-autobiography-6.png",
+                "/cars/2020-range-rover-autobiography-7.png",
+                "/cars/2020-range-rover-autobiography-8.png",
+                "/cars/2020-range-rover-autobiography-9.png",
+                "/cars/2020-range-rover-autobiography-10.png",
+                "/cars/2020-range-rover-autobiography-11.png",
+                "/cars/2020-range-rover-autobiography-12.png",
+                "/cars/2020-range-rover-autobiography-13.png",
+                "/cars/2020-range-rover-autobiography-14.png",
+                "/cars/2020-range-rover-autobiography-15.png",
+                "/cars/2020-range-rover-autobiography-16.png",
+                "/cars/2020-range-rover-autobiography-17.png",
+                "/cars/2020-range-rover-autobiography-18.png",
+                "/cars/2020-range-rover-autobiography-19.png",
+                "/cars/2020-range-rover-autobiography-20.png",
+                "/cars/2020-range-rover-autobiography-21.png",
+                "/cars/2020-range-rover-autobiography-22.png",
+                "/cars/2020-range-rover-autobiography-23.png",
+                "/cars/2020-range-rover-autobiography-24.png",
+                "/cars/2020-range-rover-autobiography-25.png"
+            ],
+            "description": "2020 RANGE ROVER 3.0 SDV6 VOUGE AUTOBİOGRAPHY \n\nBOYASIZ / DEĞİŞENSİZ / TRAMERSİZ\n\nPANAROMİK CAM TAVAN \nELEKTİRİKLİ BASAMAK \nARKA MULTİMEDYA \n12.3\" TOUCH PRO DUO TFT GÖSTERGE EKRANI \n4\" BÖLGELİ OTOMATİK KLİMA \nHDD NAVİGASYON SİSTEMİ\nTRAFİK MESAJ KANALI\nAIRMATIC \nGERİ GÖRÜŞ KAMERASI \nSURROUND KAMERA SİSTEMİ \nANAHTARSIZ GİRİŞ SİSTEMİ \nÖN & ARKA İKLİM KONTROLLÜ KOLTUKLAR \nKLİMALI ÖN ARKA KOLTUKLAR \n24 BÖLGE AYARLANABİLİR ÖN ARKA KOLTUKLAR \nISITMALI & SOĞUTMALI VE MASAJLI ÖN KOLTUKLAR \nISITMALI & SOĞUTMALI VE MASAJLI ARKA KOLTUKLAR \nHAFIZALI ÖN ARKA KOLTUKLAR \nELEKTRONİK ARKA KOL DAYAMA \nARKA CAMLARDA ELEKTİRİKLİ MAKAM PERDE \nMERİDİAN SES SİSTEMİ\nKÖR NOKTA UYARI SİSTEMİ \nÇARPIŞMA UYARI SİSTEMİ \nPARK ASİSTANI \nHAFIZA PAKETİ \nİPOD VE USB ARAYÜZÜ \nBLUETOOTH \nARKA KOLTUK TV ALICISI \nYAĞMUR SENSÖRLÜ ÖN CAM SİLECEĞİ \nOTOMATİK KARARTMALI DİKİZ AYNASI \nELEKTİRİKLİ - ISITMALI VE KATLANABİLİR  OTOMATİK YAN AYNALAR \nELEKTİRİKLİ AYARLANABİLİR DİREKSİYON KOLONU \nISITMALI DİREKSİYON \nAMBİYANS İÇ AYDINLATMA \nADAPTİF Bİ-XNEON LED FARLAR \nLED ÖZELLİKLİ FAR YIKAMA SİSTEMİ \nBİREYSEL AYARLANABİLİR İÇ ORTAM AYDINLATMA \nANAHTARSIZ ÇALIŞTIRMA (START-STOP)\nCRUISE CONTROL (HIZ SABİTLEME)\nSOFT-CLOSE VAKUMLU KAPI SİSTEMİ \nELEKTİRİKLİ İKİ PARÇALI BAGAJ KAPAĞI\nELEKTİRİKLİ YAN BASAMAKLAR \nŞERİT TAKİP ASİSTANI\nSÜRÜŞ ASİSTANI\nÇARPIŞMA ÖNLEME ASİSTANI\nÖN - ARKA PARK MESAFE KONTROLÜ \nTERRAIN RESPONSE 2 OTOMATİK HAVALI SÜSPANSİYON \n\nHUZUR OTOMOTİV \n\n0553 912 35 34",
+            "featured": true,
+            "status": "active"
+        }
+    ]
+}
