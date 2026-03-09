@@ -1,8 +1,6 @@
-import { PrismaClient } from '../../../generated/prisma'
+import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
-
-const prisma = new PrismaClient()
 
 // DELETE: Aracı sil
 export async function DELETE(

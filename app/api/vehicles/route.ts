@@ -1,8 +1,6 @@
-import { PrismaClient } from '../../generated/prisma'
+import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
-
-const prisma = new PrismaClient()
 
 // GET: Tüm araçları listele (Admin için)
 export async function GET(request: NextRequest) {
