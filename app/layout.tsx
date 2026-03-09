@@ -2,9 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Outfit } from 'next/font/google'
 import './globals.css'
 import './utils.css'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-import ScrollReveal from '@/components/ScrollReveal'
+import LayoutShell from '@/components/LayoutShell'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -32,10 +30,7 @@ export default function RootLayout({
   return (
     <html lang="tr" className={`${inter.variable} ${outfit.variable}`}>
       <body>
-        <ScrollReveal />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   )
