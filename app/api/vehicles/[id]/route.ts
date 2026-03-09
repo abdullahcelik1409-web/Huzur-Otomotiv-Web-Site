@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/app/generated/prisma'
+import { PrismaClient } from '../../../generated/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
@@ -38,7 +38,7 @@ export async function PATCH(
     try {
         const { id } = await params
         const vehicleId = parseInt(id, 10)
-        const body = await req.json()
+        const body = await request.json()
 
         const vehicle = await prisma.vehicle.update({
             where: { id: vehicleId },
