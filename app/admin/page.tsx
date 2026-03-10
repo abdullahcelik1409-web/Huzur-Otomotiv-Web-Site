@@ -68,136 +68,152 @@ export default function AdminDashboard() {
     const passiveVehicles = vehicles.filter(v => v.status === 'passive').length
 
     return (
-        <div className="space-y-8 lg:space-y-12">
-            {/* Header Actions */}
-            <div className="admin-header-actions">
-                <div className="flex-1">
-                    <h1 className="text-3xl lg:text-4xl font-black italic tracking-tighter uppercase">Genel <span className="text-neon">Bakış</span></h1>
-                    <p className="stat-label mt-2 lg:mt-1">Mağazanızın güncel durumunu buradan yönetin.</p>
-                </div>
-                <Link href="/admin/ilan-ekle" className="btn-premium shrink-0">
-                    <span className="material-symbols-outlined font-black">add</span>
-                    <span className="hidden sm:inline">Yeni İlan Yayınla</span>
-                    <span className="sm:hidden">Yeni İlan</span>
-                </Link>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
+            {/* Header */}
+            <div className="section-header">
+                <h1 className="section-title">
+                    Genel <span className="neon">Bakış</span>
+                </h1>
+                <p className="section-subtitle">Mağazanızın güncel durumunu buradan yönetin.</p>
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-                <div className="admin-card">
-                    <div className="flex justify-between items-start">
+            <div className="grid-4">
+                {/* Total Vehicles Card */}
+                <div className="admin-card stat-card">
+                    <div className="stat-header">
                         <span className="stat-label">Toplam İlan</span>
-                        <div className="size-10 rounded-lg bg-neon/10 border border-neon/20 flex items-center justify-center text-neon">
-                            <span className="material-symbols-outlined text-lg">analytics</span>
+                        <div className="stat-icon neon">
+                            <span className="material-symbols-outlined">inventory_2</span>
                         </div>
                     </div>
                     <div className="stat-value">{totalVehicles}</div>
-                    <div className="text-[10px] text-neon/50 font-black mt-3 uppercase tracking-tighter">İşlem Yapılabilir</div>
+                    <div className="stat-footer">İşlem Yapılabilir</div>
                 </div>
 
-                <div className="admin-card">
-                    <div className="flex justify-between items-start">
+                {/* Active Vehicles Card */}
+                <div className="admin-card stat-card">
+                    <div className="stat-header">
                         <span className="stat-label">Aktif İlanlar</span>
-                        <div className="size-10 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-500">
-                            <span className="material-symbols-outlined text-lg">check_circle</span>
+                        <div className="stat-icon success">
+                            <span className="material-symbols-outlined">check_circle</span>
                         </div>
                     </div>
                     <div className="stat-value">{activeVehicles}</div>
-                    <div className="text-[10px] text-green-500/50 font-black mt-3 uppercase tracking-tighter">Yayında</div>
+                    <div className="stat-footer">Yayında</div>
                 </div>
 
-                <div className="admin-card">
-                    <div className="flex justify-between items-start">
+                {/* Featured Vehicles Card */}
+                <div className="admin-card stat-card">
+                    <div className="stat-header">
                         <span className="stat-label">Öne Çıkanlar</span>
-                        <div className="size-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500">
-                            <span className="material-symbols-outlined text-lg">auto_awesome</span>
+                        <div className="stat-icon warning">
+                            <span className="material-symbols-outlined">star</span>
                         </div>
                     </div>
                     <div className="stat-value">{featuredVehicles}</div>
-                    <div className="text-[10px] text-amber-500/50 font-black mt-3 uppercase tracking-tighter">Vitrin Hizmeti</div>
+                    <div className="stat-footer">Vitrin Hizmeti</div>
                 </div>
 
-                <div className="admin-card">
-                    <div className="flex justify-between items-start">
+                {/* Passive Records Card */}
+                <div className="admin-card stat-card">
+                    <div className="stat-header">
                         <span className="stat-label">Pasif Kayıtlar</span>
-                        <div className="size-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500">
-                            <span className="material-symbols-outlined text-lg">pause_circle</span>
+                        <div className="stat-icon danger">
+                            <span className="material-symbols-outlined">pause_circle</span>
                         </div>
                     </div>
                     <div className="stat-value">{passiveVehicles}</div>
-                    <div className="text-[10px] text-red-500/50 font-black mt-3 uppercase tracking-tighter">Durdurulmuş</div>
+                    <div className="stat-footer">Durdurulmuş</div>
                 </div>
             </div>
 
-            {/* Main Content Sections */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-                {/* Recent Items List */}
-                <section className="lg:col-span-8 space-y-6">
-                    <div className="flex items-center justify-between pb-4 border-b border-white/5">
-                        <h2 className="text-xl font-black italic tracking-tighter uppercase">Son Eklenen İlanlar</h2>
-                        <span className="text-[10px] font-black uppercase text-secondary bg-white/5 px-3 py-1 rounded-full">{vehicles.length} Kayıt</span>
+            {/* Vehicles List */}
+            <div className="space-y-4">
+                <div className="card-header">
+                    <h2 className="card-header-title">Son Eklenen İlanlar ({vehicles.length})</h2>
+                    <Link href="/admin/ilan-ekle" className="btn btn-primary btn-small">
+                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>add</span>
+                        Yeni İlan
+                    </Link>
+                </div>
+
+                {loading ? (
+                    <div className="admin-card" style={{ textAlign: 'center', padding: '60px 24px' }}>
+                        <div className="spinner" style={{ margin: '0 auto', marginBottom: '16px' }}></div>
+                        <p className="stat-label">Veriler Çekiliyor...</p>
                     </div>
-
-                    {loading ? (
-                        <div className="admin-card text-center py-16 lg:py-20 opacity-50">
-                            <div className="spinner mx-auto mb-4"></div>
-                            <p className="stat-label">Veriler Çekiliyor...</p>
+                ) : vehicles.length === 0 ? (
+                    <div className="admin-card empty-state">
+                        <div className="empty-state-icon">
+                            <span className="material-symbols-outlined" style={{ fontSize: '48px' }}>
+                                inventory_2
+                            </span>
                         </div>
-                    ) : vehicles.length === 0 ? (
-                        <div className="admin-card text-center py-16 lg:py-20 border-dashed">
-                            <span className="material-symbols-outlined text-3xl lg:text-4xl text-secondary mb-4 opacity-20">inventory_2</span>
-                            <p className="stat-label">Henüz hiçbir ilan eklenmemiş.</p>
-                            <Link href="/admin/ilan-ekle" className="text-neon text-xs font-black mt-4 inline-block underline underline-offset-4">İlk İlanı Yayınla</Link>
-                        </div>
-                    ) : (
-                        <div className="space-y-3 lg:space-y-4">
-                            {vehicles.map((v) => (
-                                <div key={v.id} className="admin-card !p-4 lg:!p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 group">
-                                    <div className="flex items-center gap-4 lg:gap-6 flex-1">
-                                        <div className="size-14 lg:size-16 rounded-xl overflow-hidden border border-white/10 shrink-0">
-                                            <img src={v.images[0] || '/placeholder.png'} className="size-full object-cover group-hover:scale-110 transition-transform duration-500" alt="" />
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <h4 className="font-black text-base lg:text-lg tracking-tight uppercase group-hover:text-neon transition-colors truncate">{v.title}</h4>
-                                            <div className="flex flex-wrap items-center gap-2 lg:gap-3 mt-1">
-                                                <span className="text-[9px] lg:text-[10px] font-black text-secondary uppercase bg-white/5 px-2 py-0.5 rounded">{v.brand} {v.model}</span>
-                                                <span className="text-[9px] lg:text-[10px] font-black text-neon/80 uppercase">{v.price.toLocaleString()} ₺</span>
-                                            </div>
+                        <h3 className="empty-state-title">Henüz İlan Eklenmemiş</h3>
+                        <p className="empty-state-desc">Araç detaylarını girerek ilk ilanı yayınlayın.</p>
+                        <Link href="/admin/ilan-ekle" className="btn btn-primary btn-small" style={{ marginTop: '24px', width: 'auto' }}>
+                            İlk İlanı Yayınla
+                        </Link>
+                    </div>
+                ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        {vehicles.map((v) => (
+                            <div key={v.id} className="admin-card" style={{ padding: '16px', display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flex: 1, minWidth: 0 }}>
+                                    <img
+                                        src={v.images[0] || '/placeholder.png'}
+                                        alt={v.title}
+                                        style={{
+                                            width: '60px',
+                                            height: '60px',
+                                            borderRadius: '8px',
+                                            objectFit: 'cover',
+                                            border: '1px solid var(--border-color)',
+                                            flexShrink: 0
+                                        }}
+                                    />
+                                    <div style={{ minWidth: 0, flex: 1 }}>
+                                        <h4 style={{ fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px', color: 'var(--text-primary)' }}>
+                                            {v.title}
+                                        </h4>
+                                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                            <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', background: 'var(--secondary-bg)', padding: '4px 8px', borderRadius: '4px' }}>
+                                                {v.brand} {v.model}
+                                            </span>
+                                            <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--accent-neon)', background: 'var(--accent-neon-muted)', padding: '4px 8px', borderRadius: '4px' }}>
+                                                {v.price.toLocaleString()} ₺
+                                            </span>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2 shrink-0">
-                                        <button className="size-9 lg:size-10 rounded-xl bg-white/5 flex items-center justify-center text-white hover:bg-neon hover:text-black transition-all">
-                                            <span className="material-symbols-outlined text-base lg:text-lg">edit</span>
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(v.id, v.title)}
-                                            disabled={deleting === v.id}
-                                            className="size-9 lg:size-10 rounded-xl bg-white/5 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all"
-                                        >
-                                            <span className="material-symbols-outlined text-base lg:text-lg">{deleting === v.id ? 'sync' : 'delete'}</span>
-                                        </button>
-                                    </div>
                                 </div>
-                            ))}
-                        </div>
-                    )}
-                </section>
-
-                {/* Vertical Side Widgets */}
-                <aside className="lg:col-span-4 space-y-6 lg:space-y-8">
-                    {/* Activity Widget */}
-                    <div className="admin-card">
-                        <h3 className="stat-label mb-6 flex items-center gap-2">
-                            <span className="size-2 bg-neon rounded-full animate-pulse"></span>
-                            Son İşlemler
-                        </h3>
-                        <div className="space-y-6">
-                            <div className="flex items-start gap-4">
-                                <div className="size-8 rounded-lg bg-neon/10 flex items-center justify-center text-neon shrink-0">
-                                    <span className="material-symbols-outlined text-sm">history</span>
+                                <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                                    <button
+                                        className="btn btn-secondary btn-small"
+                                        onClick={() => router.push(`/ilan/demo?id=${v.id}`)}
+                                        title="Düzenle"
+                                    >
+                                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>edit</span>
+                                    </button>
+                                    <button
+                                        className="btn btn-danger btn-small"
+                                        onClick={() => handleDelete(v.id, v.title)}
+                                        disabled={deleting === v.id}
+                                        title="Sil"
+                                    >
+                                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                                            {deleting === v.id ? 'sync' : 'delete'}
+                                        </span>
+                                    </button>
                                 </div>
-                                <div>
-                                    <p className="text-xs font-bold">Veri senkronizasyonu tamamlandı.</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}
                                     <p className="text-[10px] text-secondary mt-1 uppercase">Az Önce</p>
                                 </div>
                             </div>

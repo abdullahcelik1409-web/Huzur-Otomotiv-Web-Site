@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 
 export default function AdminIlanEkle() {
@@ -11,6 +10,7 @@ export default function AdminIlanEkle() {
     const [files, setFiles] = useState<File[]>([])
     const [previews, setPreviews] = useState<string[]>([])
     const [isFeatured, setIsFeatured] = useState(false)
+    const [currentStep, setCurrentStep] = useState(1)
     const router = useRouter()
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,115 +89,469 @@ export default function AdminIlanEkle() {
         }
     }
 
+    const steps = [
+        { number: 1, title: 'Araç Bilgileri', icon: 'info' },
+        { number: 2, title: 'Görsel Galeri', icon: 'image' },
+        { number: 3, title: 'Detaylar', icon: 'description' },
+    ]
+
     return (
-        <div className="max-w-[1000px] mx-auto space-y-12 pb-24">
-            {/* Header Actions */}
-            <div className="admin-header-actions border-none mb-0">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '48px', maxWidth: '800px', margin: '0 auto' }}>
+            {/* Header */}
+            <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
-                    <h1 className="text-4xl font-black italic tracking-tighter uppercase">Yeni <span className="text-neon">İlan Ekle</span></h1>
-                    <p className="stat-label mt-1">Araç detaylarını girerek yeni bir ilan yayınlayın.</p>
+                    <h1 className="section-title">Yeni <span className="neon">İlan Ekle</span></h1>
+                    <p className="section-subtitle">Araç detaylarını adım adım girerek yeni bir ilan yayınlayın.</p>
                 </div>
-                <button onClick={() => router.back()} className="text-[10px] font-black uppercase tracking-widest text-secondary hover:text-white transition-colors">
-                    Vazgeç
+                <button
+                    onClick={() => router.back()}
+                    className="btn btn-secondary btn-small"
+                >
+                    <span className="material-symbols-outlined">close</span>
                 </button>
             </div>
 
+            {/* Steps Indicator */}
+            <div style={{
+                display: 'flex',
+                gap: '16px',
+                justifyContent: 'center'
+            }}>
+                {steps.map((step) => (
+                    <button
+                        key={step.number}
+                        onClick={() => setCurrentStep(step.number)}
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '16px',
+                            background: currentStep >= step.number ? 'var(--accent-neon-muted)' : 'transparent',
+                            border: '1px solid ' + (currentStep >= step.number ? 'var(--accent-neon)' : 'var(--border-color)'),
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            flex: 1
+                        }}
+                        onMouseEnter={(e) => {
+                            if (currentStep >= step.number) {
+                                (e.currentTarget as HTMLElement).style.background = 'var(--accent-neon-muted)'
+                                (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'
+                            }
+                        }}
+                        onMouseLeave={(e) => {
+                            if (currentStep >= step.number) {
+                                (e.currentTarget as HTMLElement).style.background = 'var(--accent-neon-muted)'
+                                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
+                            }
+                        }}
+                    >
+                        <div style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '8px',
+                            background: currentStep >= step.number ? 'var(--accent-neon)' : 'var(--secondary-bg)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: currentStep >= step.number ? 'black' : 'var(--text-secondary)',
+                            fontWeight: 700
+                        }}>
+                            {currentStep > step.number ? (
+                                <span className="material-symbols-outlined">check</span>
+                            ) : (
+                                step.number
+                            )}
+                        </div>
+                        <span style={{
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px',
+                            color: currentStep >= step.number ? 'var(--text-primary)' : 'var(--text-secondary)'
+                        }}>
+                            {step.title}
+                        </span>
+                    </button>
+                ))}
+            </div>
+
+            {/* Message Alert */}
             {message.text && (
-                <div className={`p-6 rounded-2xl flex items-center gap-4 ${message.type === 'success' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'}`}>
-                    <span className="material-symbols-outlined text-2xl font-black">
-                        {message.type === 'success' ? 'check_circle' : 'error'}
-                    </span>
-                    <p className="font-bold text-sm tracking-tight">{message.text}</p>
+                <div style={{
+                    padding: '16px',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    background: message.type === 'success' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid ' + (message.type === 'success' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'),
+                    color: message.type === 'success' ? '#22c55e' : '#ef4444'
+                }}>
+                    <span className="material-symbols-outlined">{message.type === 'success' ? 'check_circle' : 'error'}</span>
+                    <span style={{ fontSize: '13px', fontWeight: 600 }}>{message.text}</span>
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-10">
-                {/* Araç Bilgileri Section */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-3 mb-6">
-                        <span className="text-xs font-black text-neon uppercase bg-neon/10 px-3 py-1 rounded-full">01</span>
-                        <h2 className="text-xl font-black italic tracking-tighter uppercase">Araç Teknik Detayları</h2>
-                    </div>
-
-                    <div className="admin-card space-y-8">
-                        <div className="space-y-2">
-                            <label className="stat-label">İlan Başlığı</label>
-                            <input name="title" type="text" className="w-full h-14 bg-black border border-white/5 rounded-xl px-6 outline-none focus:border-neon transition-all font-bold text-lg" placeholder="Örn: 2023 Mercedes-Benz Sprinter" required />
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                {/* Step 1: Vehicle Details */}
+                {currentStep >= 1 && (
+                    <div className="admin-card" style={{ display: currentStep === 1 ? 'block' : 'none' }}>
+                        <div style={{ marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid var(--border-light)' }}>
+                            <h2 style={{
+                                fontSize: '14px',
+                                fontWeight: 700,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px'
+                            }}>Araç Teknik Bilgileri</h2>
                         </div>
 
-                        <div className="admin-grid">
-                            <div className="col-span-12 md:col-span-6 space-y-2">
-                                <label className="stat-label">Marka</label>
-                                <input name="brand" type="text" className="w-full h-12 bg-black border border-white/5 rounded-xl px-4 outline-none focus:border-neon transition-all font-bold" placeholder="Örn: Mercedes-Benz" required />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <div className="form-group">
+                                <label className="form-label">İlan Başlığı</label>
+                                <input
+                                    name="title"
+                                    type="text"
+                                    className="input-base"
+                                    placeholder="Örn: 2023 Mercedes-Benz Sprinter"
+                                    required
+                                    disabled={loading}
+                                />
                             </div>
-                            <div className="col-span-12 md:col-span-6 space-y-2">
-                                <label className="stat-label">Model</label>
-                                <input name="model" type="text" className="w-full h-12 bg-black border border-white/5 rounded-xl px-4 outline-none focus:border-neon transition-all font-bold" placeholder="Örn: Sprinter" required />
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                <div className="form-group">
+                                    <label className="form-label">Marka</label>
+                                    <input
+                                        name="brand"
+                                        type="text"
+                                        className="input-base"
+                                        placeholder="Örn: Mercedes-Benz"
+                                        required
+                                        disabled={loading}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Model</label>
+                                    <input
+                                        name="model"
+                                        type="text"
+                                        className="input-base"
+                                        placeholder="Örn: Sprinter"
+                                        required
+                                        disabled={loading}
+                                    />
+                                </div>
                             </div>
-                            <div className="col-span-12 md:col-span-4 space-y-2">
-                                <label className="stat-label">Yıl</label>
-                                <input name="year" type="number" className="w-full h-12 bg-black border border-white/5 rounded-xl px-4 outline-none focus:border-neon transition-all font-bold" placeholder="2023" required />
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
+                                <div className="form-group">
+                                    <label className="form-label">Yıl</label>
+                                    <input
+                                        name="year"
+                                        type="number"
+                                        className="input-base"
+                                        placeholder="2023"
+                                        required
+                                        disabled={loading}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Kilometre</label>
+                                    <input
+                                        name="km"
+                                        type="number"
+                                        className="input-base"
+                                        placeholder="0"
+                                        required
+                                        disabled={loading}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Fiyat (₺)</label>
+                                    <input
+                                        name="price"
+                                        type="number"
+                                        className="input-base"
+                                        placeholder="1250000"
+                                        required
+                                        disabled={loading}
+                                    />
+                                </div>
                             </div>
-                            <div className="col-span-12 md:col-span-4 space-y-2">
-                                <label className="stat-label">Kilometre</label>
-                                <input name="km" type="number" className="w-full h-12 bg-black border border-white/5 rounded-xl px-4 outline-none focus:border-neon transition-all font-bold" placeholder="0" required />
-                            </div>
-                            <div className="col-span-12 md:col-span-4 space-y-2">
-                                <label className="stat-label">Fiyat (₺)</label>
-                                <input name="price" type="number" className="w-full h-12 bg-black border border-white/5 rounded-xl px-4 outline-none focus:border-neon transition-all font-bold text-neon" placeholder="1.250.000" required />
-                            </div>
+
+                            <button
+                                type="button"
+                                onClick={() => setCurrentStep(2)}
+                                className="btn btn-primary"
+                                style={{ marginTop: '16px' }}
+                            >
+                                <span>Devam Et</span>
+                                <span className="material-symbols-outlined">arrow_forward</span>
+                            </button>
                         </div>
                     </div>
-                </section>
+                )}
 
-                {/* Fotoğraflar Section */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-3 mb-6">
-                        <span className="text-xs font-black text-neon uppercase bg-neon/10 px-3 py-1 rounded-full">02</span>
-                        <h2 className="text-xl font-black italic tracking-tighter uppercase">Görsel Galeri</h2>
-                    </div>
+                {/* Step 2: Gallery */}
+                {currentStep >= 2 && (
+                    <div className="admin-card" style={{ display: currentStep === 2 ? 'block' : 'none' }}>
+                        <div style={{ marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid var(--border-light)' }}>
+                            <h2 style={{
+                                fontSize: '14px',
+                                fontWeight: 700,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px'
+                            }}>Görsel Galeri</h2>
+                        </div>
 
-                    <div className="admin-card">
-                        <div className="border-2 border-dashed border-white/5 rounded-2xl p-12 text-center hover:border-neon/30 transition-all relative bg-white/[0.01]">
+                        <div style={{
+    border: '2px dashed var(--border-color)',
+                            borderRadius: '12px',
+                            padding: '40px 24px',
+                            textAlign: 'center',
+                            cursor: 'pointer',
+                            position: 'relative',
+                            background: 'rgba(204, 255, 0, 0.01)',
+                            transition: 'all 0.3s ease'
+                        }}
+                            onDragOver={(e) => {
+                                e.preventDefault();
+                                (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent-neon)'
+                                (e.currentTarget as HTMLElement).style.background = 'var(--accent-neon-muted)'
+                            }}
+                            onDragLeave={(e) => {
+                                (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'
+                                (e.currentTarget as HTMLElement).style.background = 'rgba(204, 255, 0, 0.01)'
+                            }}
+                            onDrop={(e) => {
+                                e.preventDefault();
+                                (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'
+                                (e.currentTarget as HTMLElement).style.background = 'rgba(204, 255, 0, 0.01)'
+                                const input = (e.currentTarget as HTMLElement).querySelector('input') as HTMLInputElement
+                                if (input && e.dataTransfer?.files) {
+                                    input.files = e.dataTransfer.files
+                                    handleFileChange({ target: input } as any)
+                                }
+                            }}
+                        >
                             <input
                                 type="file"
                                 multiple
                                 onChange={handleFileChange}
-                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }}
                                 accept="image/*"
+                                disabled={loading}
                             />
-                            <div className="size-16 bg-neon/10 rounded-2xl flex items-center justify-center text-neon mx-auto mb-4">
-                                <span className="material-symbols-outlined text-3xl">add_a_photo</span>
+                            <div style={{
+                                width: '48px',
+                                height: '48px',
+                                background: 'var(--accent-neon-muted)',
+                                borderRadius: '8px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'var(--accent-neon)',
+                                fontSize: '24px',
+                                margin: '0 auto 12px'
+                            }}>
+                                <span className="material-symbols-outlined">add_a_photo</span>
                             </div>
-                            <p className="font-bold text-white tracking-tight">Fotoğrafları buraya sürükleyin</p>
-                            <p className="stat-label mt-1 lowercase">PNG, JPG, WEBP • Max 5MB</p>
+                            <p style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>Fotoğrafları buraya sürükleyin</p>
+                            <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>PNG, JPG, WEBP • Max 5MB</p>
                         </div>
 
                         {previews.length > 0 && (
-                            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 mt-8">
-                                {previews.map((url, i) => (
-                                    <div key={i} className="aspect-square rounded-xl overflow-hidden border border-white/5 relative group shadow-2xl">
-                                        <img src={url} className="size-full object-cover group-hover:scale-110 transition-transform duration-500" alt="" />
-                                        <button
-                                            type="button"
-                                            onClick={() => removeFile(i)}
-                                            className="absolute inset-0 bg-red-500/80 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm"
+                            <>
+                                <p style={{
+                                    marginTop: '24px',
+                                    marginBottom: '12px',
+                                    fontSize: '11px',
+                                    fontWeight: 700,
+                                    textTransform: 'uppercase',
+                                    color: 'var(--text-secondary)',
+                                    letterSpacing: '0.5px'
+                                }}>
+                                    {previews.length} fotoğraf yüklendi
+                                </p>
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))',
+                                    gap: '12px'
+                                }}>
+                                    {previews.map((url, i) => (
+                                        <div
+                                            key={i}
+                                            style={{
+                                                aspectRatio: '1',
+                                                borderRadius: '8px',
+                                                overflow: 'hidden',
+                                                border: '1px solid var(--border-color)',
+                                                position: 'relative',
+                                                group: 'hover'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                const btn = (e.currentTarget as HTMLElement).querySelector('button') as HTMLElement
+                                                if (btn) btn.style.opacity = '1'
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                const btn = (e.currentTarget as HTMLElement).querySelector('button') as HTMLElement
+                                                if (btn) btn.style.opacity = '0'
+                                            }}
                                         >
-                                            <span className="material-symbols-outlined text-2xl font-black">delete</span>
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
+                                            <img
+                                                src={url}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                alt={`Preview ${i}`}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeFile(i)}
+                                                style={{
+                                                    position: 'absolute',
+                                                    inset: 0,
+                                                    background: 'rgba(239, 68, 68, 0.8)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    color: 'white',
+                                                    opacity: 0,
+                                                    transition: 'opacity 0.2s ease',
+                                                    border: 'none',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <span className="material-symbols-outlined">delete</span>
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
                         )}
-                    </div>
-                </section>
 
-                {/* Detaylar Section */}
-                <section className="space-y-6">
-                    <div className="flex items-center gap-3 mb-6">
-                        <span className="text-xs font-black text-neon uppercase bg-neon/10 px-3 py-1 rounded-full">03</span>
-                        <h2 className="text-xl font-black italic tracking-tighter uppercase">Ek Özellikler ve Notlar</h2>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: '12px',
+                            marginTop: '24px'
+                        }}>
+                            <button
+                                type="button"
+                                onClick={() => setCurrentStep(1)}
+                                className="btn btn-secondary"
+                            >
+                                <span className="material-symbols-outlined">arrow_back</span>
+                                <span>Geri</span>
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setCurrentStep(3)}
+                                className="btn btn-primary"
+                            >
+                                <span>Devam Et</span>
+                                <span className="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                        </div>
                     </div>
+                )}
+
+                {/* Step 3: Details */}
+                {currentStep >= 3 && (
+                    <div className="admin-card" style={{ display: currentStep === 3 ? 'block' : 'none' }}>
+                        <div style={{ marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid var(--border-light)' }}>
+                            <h2 style={{
+                                fontSize: '14px',
+                                fontWeight: 700,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px'
+                            }}>Ek Özellikler</h2>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <div className="form-group">
+                                <label className="form-label">Araç Açıklaması</label>
+                                <textarea
+                                    name="description"
+                                    className="textarea-base"
+                                    placeholder="Araç hakkında detaylı bilgi girin..."
+                                    required
+                                    disabled={loading}
+                                />
+                            </div>
+
+                            <div style={{
+                                padding: '16px',
+                                background: 'var(--secondary-bg)',
+                                border: '1px solid var(--border-color)',
+                                borderRadius: '8px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease'
+                            }}
+                                onClick={() => setIsFeatured(!isFeatured)}
+                                onMouseEnter={(e) => {
+                                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent-neon)'
+                                    (e.currentTarget as HTMLElement).style.background = 'rgba(204, 255, 0, 0.02)'
+                                }}
+                                onMouseLeave={(e) => {
+                                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'
+                                    (e.currentTarget as HTMLElement).style.background = 'var(--secondary-bg)'
+                                }}
+                            >
+                                <div style={{
+                                    width: '20px',
+                                    height: '20px',
+                                    border: '2px solid ' + (isFeatured ? 'var(--accent-neon)' : 'var(--border-color)'),
+                                    borderRadius: '4px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    background: isFeatured ? 'var(--accent-neon)' : 'transparent',
+                                    transition: 'all 0.3s ease'
+                                }}>
+                                    {isFeatured && (
+                                        <span className="material-symbols-outlined" style={{ fontSize: '14px', color: 'black' }}>check</span>
+                                    )}
+                                </div>
+                                <label style={{ cursor: 'pointer', userSelect: 'none', fontSize: '13px', fontWeight: 600 }}>
+                                    Bu İlanı <span style={{ color: 'var(--accent-neon)' }}>"Öne Çıkanlar"</span> Bölümünde Göster
+                                </label>
+                            </div>
+
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: '1fr 1fr',
+                                gap: '12px',
+                                marginTop: '24px'
+                            }}>
+                                <button
+                                    type="button"
+                                    onClick={() => setCurrentStep(2)}
+                                    className="btn btn-secondary"
+                                    disabled={loading}
+                                >
+                                    <span className="material-symbols-outlined">arrow_back</span>
+                                    <span>Geri</span>
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    disabled={loading}
+                                >
+                                    <span className="material-symbols-outlined">{loading ? 'sync' : 'check'}</span>
+                                    <span>{loading ? 'Yayınlanıyor...' : 'İlanı Yayınla'}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </form>
+        </div>
+    )
+}
 
                     <div className="admin-card space-y-8">
                         <div className="space-y-2">

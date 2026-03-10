@@ -43,7 +43,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         return (
             <div className="admin-loading">
                 <div className="spinner"></div>
-                Yükleniyor...
+                <span>Yükleniyor...</span>
             </div>
         )
     }
@@ -57,23 +57,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="admin-layout">
             {/* Desktop Sidebar */}
             <aside className="sidebar-container">
-                <div className="p-8 mb-4">
-                    <div className="flex items-center gap-3">
-                        <div className="size-10 bg-neon rounded-xl flex items-center justify-center text-black shadow-lg shadow-neon/20">
-                            <span className="material-symbols-outlined text-2xl font-black">directions_car</span>
-                        </div>
-                        <span className="font-black text-xl tracking-tighter italic text-white leading-none">
-                            HUZUR <span className="text-neon">OTO</span>
+                <div className="sidebar-logo">
+                    <div className="sidebar-logo-icon">
+                        <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
+                            directions_car
                         </span>
+                    </div>
+                    <div className="sidebar-logo-text">
+                        HUZUR <span className="neon">OTO</span>
                     </div>
                 </div>
 
-                <nav className="flex-1">
+                <nav className="sidebar-nav">
                     {navItems.map((item) => (
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`nav-link ${pathname === item.href ? 'active' : ''}`}
+                            className={`nav-item ${pathname === item.href ? 'active' : ''}`}
                         >
                             <span className="material-symbols-outlined">{item.icon}</span>
                             <span>{item.name}</span>
@@ -81,75 +81,99 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     ))}
                 </nav>
 
-                <div className="p-6 border-t border-white/5">
-                    <button onClick={handleLogout} className="flex items-center gap-3 px-6 py-3 text-red-500/80 hover:text-red-500 transition-all font-bold uppercase text-xs tracking-widest">
-                        <span className="material-symbols-outlined">logout</span>
-                        <span>Güvenli Çıkış</span>
+                <div className="sidebar-footer">
+                    <button onClick={handleLogout} className="logout-btn">
+                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                            logout
+                        </span>
+                        <span>Çıkış</span>
                     </button>
                 </div>
             </aside>
 
-            {/* Mobile Header */}
-            <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-black border-b border-white/5 flex items-center justify-between px-4 z-[110]">
-                <div className="flex items-center gap-2">
-                    <div className="size-8 bg-neon rounded-lg flex items-center justify-center text-black">
-                        <span className="material-symbols-outlined text-lg font-black">directions_car</span>
+            {/* Mobile Top Bar */}
+            <div className="mobile-top-bar">
+                <div className="mobile-logo">
+                    <div style={{
+                        width: '28px',
+                        height: '28px',
+                        background: 'var(--accent-neon)',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'black',
+                        fontSize: '16px',
+                        fontWeight: 900
+                    }}>
+                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
+                            directions_car
+                        </span>
                     </div>
-                    <span className="font-black text-sm tracking-tighter italic">HUZUR <span className="text-neon">OTO</span></span>
+                    <span>HUZUR <span style={{ color: 'var(--accent-neon)' }}>OTO</span></span>
                 </div>
-                <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-neon">
-                    <span className="material-symbols-outlined">{sidebarOpen ? 'close' : 'menu'}</span>
+                <button
+                    className="mobile-menu-toggle"
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                    aria-label="Toggle Menu"
+                >
+                    <span className="material-symbols-outlined">
+                        {sidebarOpen ? 'close' : 'menu'}
+                    </span>
                 </button>
-            </header>
+            </div>
 
-            {/* Main Content */}
-            <main className="flex-1 min-w-0 bg-black overflow-y-auto w-full">
-                <header className="hidden lg:flex h-20 items-center justify-between px-8 lg:px-12 border-b border-white/5 bg-black/50 backdrop-blur-md sticky top-0 z-40">
-                    <div className="flex items-center gap-4">
-                        <span className="text-[10px] font-black uppercase tracking-widest opacity-60">Sistem Yönetimi</span>
-                        <div className="h-4 w-px bg-white/10"></div>
-                        <span className="text-xs font-bold text-neon uppercase">v2.0 Beta</span>
-                    </div>
-
-                    <div className="flex items-center gap-6">
-                        <div className="text-right hidden sm:block">
-                            <p className="text-[10px] font-black uppercase tracking-widest opacity-50">Yönetici</p>
-                            <p className="text-xs text-white font-bold">huzuroto.com</p>
-                        </div>
-                        <div className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-neon shadow-inner">
-                            <span className="material-symbols-outlined text-lg">admin_panel_settings</span>
-                        </div>
-                    </div>
-                </header>
-
-                <div className="p-4 lg:p-8 xl:p-12 max-w-[1600px] mx-auto">
-                    {children}
-                </div>
-            </main>
-
-            {/* Mobile Overlay Menu */}
+            {/* Mobile Sidebar Overlay */}
             {sidebarOpen && (
-                <div className="fixed inset-0 z-[120] bg-black/95 backdrop-blur-xl lg:hidden flex flex-col p-12">
-                    <button onClick={() => setSidebarOpen(false)} className="absolute top-8 right-8 text-neon">
-                        <span className="material-symbols-outlined text-4xl">close</span>
+                <div className="sidebar-overlay active">
+                    <button
+                        onClick={() => setSidebarOpen(false)}
+                        style={{
+                            position: 'absolute',
+                            top: '16px',
+                            right: '16px',
+                            background: 'none',
+                            border: 'none',
+                            color: 'var(--accent-neon)',
+                            fontSize: '28px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        <span className="material-symbols-outlined">close</span>
                     </button>
-                    <nav className="flex-1 flex flex-col justify-center gap-8">
+                    <nav style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
                         {navItems.map((item) => (
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="text-4xl font-black italic tracking-tighter text-white hover:text-neon transition-all"
+                                className={`nav-item ${pathname === item.href ? 'active' : ''}`}
                                 onClick={() => setSidebarOpen(false)}
                             >
-                                {item.name}
+                                <span className="material-symbols-outlined">{item.icon}</span>
+                                <span>{item.name}</span>
                             </Link>
                         ))}
-                        <button onClick={handleLogout} className="text-red-500 text-2xl font-black uppercase tracking-widest text-left mt-8">
-                            Çıkış Yap
-                        </button>
                     </nav>
+                    <button
+                        onClick={() => {
+                            handleLogout()
+                            setSidebarOpen(false)
+                        }}
+                        className="logout-btn"
+                        style={{ marginTop: '32px' }}
+                    >
+                        <span className="material-symbols-outlined">logout</span>
+                        <span>Güvenli Çıkış</span>
+                    </button>
                 </div>
             )}
+
+            {/* Main Content */}
+            <main>
+                <div className="admin-content">
+                    {children}
+                </div>
+            </main>
         </div>
     )
 }

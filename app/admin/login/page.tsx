@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import './login.css'
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
@@ -43,60 +43,97 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen bg-black text-white flex items-center justify-center p-6 selection:bg-neon selection:text-black">
-            <div className="w-full max-w-md space-y-8">
-                {/* Logo & Header */}
-                <div className="text-center space-y-4">
-                    <div className="inline-flex items-center justify-center size-16 bg-neon rounded-2xl text-black mb-2 shadow-lg shadow-neon/20">
-                        <span className="material-symbols-outlined text-4xl font-bold">directions_car</span>
+        <div className="login-container">
+            <div className="login-box">
+                {/* Header */}
+                <div className="login-header">
+                    <div className="login-icon">
+                        <span className="material-symbols-outlined">directions_car</span>
                     </div>
-                    <div>
-                        <h1 className="text-3xl font-black tracking-tight">Huzur <span className="text-neon">Otomotiv</span></h1>
-                        <p className="text-secondary text-sm mt-2 font-medium">Yönetici Paneli Erişimi</p>
-                    </div>
+                    <h1>Huzur <span className="neon">Otomotiv</span></h1>
+                    <p>Yönetici Paneli Erişimi</p>
                 </div>
 
                 {/* Login Form */}
-                <div className="admin-card !p-8 border border-white/5 bg-tertiary/50 backdrop-blur-xl shadow-2xl relative overflow-hidden group">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon/50 to-transparent"></div>
+                <form onSubmit={handleLogin} className="login-form">
+                    {error && (
+                        <div className="error-message">
+                            <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>error</span>
+                            <span>{error}</span>
+                        </div>
+                    )}
 
-                    <form onSubmit={handleLogin} className="space-y-6 relative z-10">
-                        {error && (
-                            <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold rounded-xl flex items-center gap-2 animate-shake">
-                                <span className="material-symbols-outlined text-sm">error</span>
-                                {error}
-                            </div>
+                    {/* Email Field */}
+                    <div className="form-group">
+                        <label className="form-label">E-posta Adresi</label>
+                        <div className="form-input-wrapper">
+                            <span className="form-input-icon material-symbols-outlined">mail</span>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="input-base"
+                                placeholder="admin@huzurotomotiv.com"
+                                required
+                                disabled={loading}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Password Field */}
+                    <div className="form-group">
+                        <label className="form-label">Şifre</label>
+                        <div className="form-input-wrapper">
+                            <span className="form-input-icon material-symbols-outlined">lock</span>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="input-base"
+                                placeholder="••••••••"
+                                required
+                                disabled={loading}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        className="login-btn"
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <>
+                                <span className="spinner"></span>
+                                Giriş Yapılıyor...
+                            </>
+                        ) : (
+                            'Giriş Yap'
                         )}
+                    </button>
+                </form>
 
-                        <div className="form-group">
-                            <label className="form-label !text-xs !uppercase !tracking-widest">E-posta Adresi</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-secondary text-lg">mail</span>
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="input-base !pl-12"
-                                    placeholder="admin@huzurotomotiv.com"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label !text-xs !uppercase !tracking-widest">Şifre</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-secondary text-lg">lock</span>
-                                <input
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="input-base !pl-12"
-                                    placeholder="••••••••"
-                                    required
-                                />
-                            </div>
-                        </div>
+                {/* Footer Note */}
+                <div style={{
+                    marginTop: '24px',
+                    paddingTop: '24px',
+                    borderTop: '1px solid var(--border-color)',
+                    textAlign: 'center'
+                }}>
+                    <p style={{
+                        fontSize: '11px',
+                        color: 'var(--text-secondary)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                    }}>
+                        Giriş bilgileriniz güvenli bir şekilde korunmaktadır
+                    </p>
+                </div>
+            </div>
+        </div>
+    )
+}
 
                         <button
                             type="submit"
