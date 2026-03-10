@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client"
+import { PrismaPg } from "@prisma/adapter-pg"
+import { Pool } from "pg"
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient }
+const globalForPrisma = global as unknown as { prisma: PrismaClient; pool?: Pool }
 
 /**
  * Prisma 7 için Lazy-Loading Proxy.
@@ -17,11 +19,24 @@ export const prisma = new Proxy({} as PrismaClient, {
                 return async (...args: any[]) => {
                     if (!globalForPrisma.prisma) {
                         // Build sırasında DATABASE_URL yoksa patlamaması için kontrol
-                        if (!process.env.DATABASE_URL && process.env.NODE_ENV === 'production') {
+                        if (!process.env.DATABASE_URL) {
+                            if (process.env.NODE_ENV === 'production') {
+                                throw new Error('DATABASE_URL environment variable is not set');
+                            }
                             return [];
                         }
 
+                        // Adapter ile PrismaClient oluştur
+                        if (!globalForPrisma.pool) {
+                            globalForPrisma.pool = new Pool({
+                                connectionString: process.env.DATABASE_URL,
+                            });
+                        }
+
+                        const adapter = new PrismaPg(globalForPrisma.pool);
+
                         globalForPrisma.prisma = new PrismaClient({
+                            adapter,
                             log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
                         });
                     }
