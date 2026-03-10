@@ -42,17 +42,24 @@ export default function AdminIlanEkle() {
         })
 
         try {
+            if (!files.length) {
+                throw new Error('En az bir resim seçmeniz gerekiyor')
+            }
+
             const uploadedUrls = []
             for (const file of files) {
                 const fileExt = file.name.split('.').pop()
                 const fileName = `${Math.random()}.${fileExt}`
                 const filePath = `cars/${fileName}`
 
-                const { error } = await supabase.storage
+                const { error, data } = await supabase.storage
                     .from('vehicle-images')
                     .upload(filePath, file)
 
-                if (error) throw error
+                if (error) {
+                    console.error('Upload error:', error)
+                    throw new Error(`Resim yüklenirken hata: ${error.message}`)
+                }
 
                 const { data: { publicUrl } } = supabase.storage
                     .from('vehicle-images')
@@ -77,12 +84,16 @@ export default function AdminIlanEkle() {
                 body: JSON.stringify(finalData)
             })
 
-            if (!res.ok) throw new Error('İlan kaydedilemedi')
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}))
+                throw new Error(errorData.error || 'İlan kaydedilemedi')
+            }
 
             setMessage({ type: 'success', text: 'İlan başarıyla oluşturuldu! Yönlendiriliyorsunuz...' })
             setTimeout(() => router.push('/admin'), 2000)
 
         } catch (err: any) {
+            console.error('Submit error:', err)
             setMessage({ type: 'error', text: err.message || 'Bir hata oluştu' })
         } finally {
             setLoading(false)

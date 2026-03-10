@@ -30,6 +30,14 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const { title, brand, model, year, price, km, description, images, featured } = body
 
+        // Validation
+        if (!title || !brand || !model || !images || images.length === 0) {
+            return NextResponse.json(
+                { error: 'Gerekli alanlar: title, brand, model, images' },
+                { status: 400 }
+            )
+        }
+
         // Slug oluştur (Türkçe karakter düzeltmesi ile)
         const slug = title
             .toLowerCase()
@@ -57,8 +65,9 @@ export async function POST(request: NextRequest) {
         })
 
         return NextResponse.json({ success: true, vehicle }, { status: 201 })
-    } catch (error) {
+    } catch (error: any) {
         console.error('Create error:', error)
-        return NextResponse.json({ error: 'Araç oluşturulamadı' }, { status: 500 })
+        const message = error?.message || 'Araç oluşturulamadı'
+        return NextResponse.json({ error: message }, { status: 500 })
     }
 }
