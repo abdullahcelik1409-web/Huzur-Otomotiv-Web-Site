@@ -62,39 +62,41 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     ]
 
     return (
-        <div className="admin-layout min-h-screen bg-black text-white selection:bg-neon selection:text-black">
+        <div className="admin-layout min-h-screen bg-black text-white selection:bg-neon selection:text-black flex">
             {/* Mobile Sidebar Overlay */}
-            <div className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={() => setSidebarOpen(false)}>
-                <aside className={`h-full w-4/5 max-w-xs bg-tertiary p-6 shadow-2xl border-r border-white/5 flex flex-col transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} onClick={(e) => e.stopPropagation()}>
-                    <div className="flex items-center justify-between mb-8">
-                        <div className="flex items-center gap-3">
-                            <div className="size-10 bg-neon rounded-lg flex items-center justify-center text-black">
-                                <span className="material-symbols-outlined font-bold">directions_car</span>
+            {sidebarOpen && (
+                <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm lg:hidden" onClick={() => setSidebarOpen(false)}>
+                    <aside className="h-full w-72 bg-tertiary p-6 shadow-2xl border-r border-white/5 flex flex-col" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-between mb-8">
+                            <div className="flex items-center gap-3">
+                                <div className="size-10 bg-neon rounded-lg flex items-center justify-center text-black">
+                                    <span className="material-symbols-outlined font-bold">directions_car</span>
+                                </div>
+                                <h1 className="text-xl font-bold tracking-tight">Huzur <span className="text-neon">Oto</span></h1>
                             </div>
-                            <h1 className="text-xl font-bold tracking-tight">Huzur <span className="text-neon">Oto</span></h1>
+                            <button className="p-2 text-secondary hover:text-neon transition-colors" onClick={() => setSidebarOpen(false)}>
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
                         </div>
-                        <button className="p-2 text-secondary hover:text-neon transition-colors" onClick={() => setSidebarOpen(false)}>
-                            <span className="material-symbols-outlined">close</span>
-                        </button>
-                    </div>
-                    <nav className="flex-1 space-y-2">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className={`flex items-center gap-4 p-3 rounded-xl transition-all ${pathname === item.href ? 'bg-neon/10 text-neon font-bold' : 'text-secondary hover:bg-white/5 hover:text-white'}`}
-                                onClick={() => setSidebarOpen(false)}
-                            >
-                                <span className="material-symbols-outlined">{item.icon === '📊' ? 'dashboard' : 'add_circle'}</span>
-                                <span>{item.name}</span>
-                            </Link>
-                        ))}
-                    </nav>
-                </aside>
-            </div>
+                        <nav className="flex-1 space-y-2">
+                            {navItems.map((item) => (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className={`flex items-center gap-4 p-3 rounded-xl transition-all ${pathname === item.href ? 'bg-neon/10 text-neon font-bold' : 'text-secondary hover:bg-white/5 hover:text-white'}`}
+                                    onClick={() => setSidebarOpen(false)}
+                                >
+                                    <span className="material-symbols-outlined">{item.icon === '📊' ? 'dashboard' : 'add_circle'}</span>
+                                    <span>{item.name}</span>
+                                </Link>
+                            ))}
+                        </nav>
+                    </aside>
+                </div>
+            )}
 
             {/* Desktop Sidebar */}
-            <aside className="hidden lg:flex flex-col w-72 bg-tertiary border-r border-white/5 h-screen sticky top-0 p-6">
+            <aside className="hidden lg:flex flex-col w-72 bg-tertiary border-r border-white/5 h-screen sticky top-0 p-6 flex-shrink-0">
                 <div className="flex items-center gap-3 mb-10 px-2">
                     <div className="bg-neon p-2 rounded-lg text-black">
                         <span className="material-symbols-outlined font-bold">directions_car</span>
@@ -122,7 +124,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
 
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className="flex-1 flex flex-col min-w-0 min-h-screen">
                 {/* Top Nav (Mobile/Desktop Header) */}
                 <header className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/5 px-4 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -132,10 +134,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <h2 className="text-lg font-bold text-white hidden lg:block">Yönetim Paneli</h2>
                     </div>
                     <div className="flex items-center gap-3">
-                        <button className="p-2 text-secondary bg-white/5 rounded-full hover:bg-white/10 transition-colors relative">
-                            <span className="material-symbols-outlined text-[20px]">notifications</span>
-                            <span className="absolute top-2 right-2 size-2 bg-neon rounded-full border-2 border-black"></span>
-                        </button>
                         <div className="hidden md:flex flex-col items-end">
                             <span className="text-xs font-bold text-white uppercase tracking-wider">Admin</span>
                             <span className="text-[10px] text-neon">huzuroto.com</span>
@@ -146,7 +144,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </div>
                 </header>
 
-                <main className="flex-1">
+                <main className="flex-1 p-4 lg:p-8">
                     {children}
                 </main>
 
@@ -154,11 +152,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <nav className="lg:hidden fixed bottom-0 inset-x-0 bg-tertiary/95 backdrop-blur-xl border-t border-white/5 px-2 pb-6 pt-2 z-40">
                     <div className="flex justify-around items-center max-w-lg mx-auto">
                         <Link href="/admin" className={`flex flex-col items-center gap-1 ${pathname === '/admin' ? 'text-neon' : 'text-secondary'}`}>
-                            <span className={`material-symbols-outlined ${pathname === '/admin' ? 'fill-1' : ''}`}>dashboard</span>
+                            <span className="material-symbols-outlined">dashboard</span>
                             <span className="text-[10px] font-bold">Panel</span>
                         </Link>
                         <Link href="/admin/ilan-ekle" className={`flex flex-col items-center gap-1 ${pathname === '/admin/ilan-ekle' ? 'text-neon' : 'text-secondary'}`}>
-                            <span className={`material-symbols-outlined ${pathname === '/admin/ilan-ekle' ? 'fill-1' : ''}`}>add_circle</span>
+                            <span className="material-symbols-outlined">add_circle</span>
                             <span className="text-[10px] font-medium">Yeni İlan</span>
                         </Link>
                         <div className="-mt-8">

@@ -1,12 +1,36 @@
 /* ===== Admin Panel Styles ===== */
 
+/* ===== Admin Icons Support ===== */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+}
+
+/* ===== Admin Panel Styles (Legacy Cleanup) ===== */
+
 /* Admin Layout */
+/*
 .admin-layout {
     display: flex;
     min-height: 100vh;
     background: var(--bg-primary);
 }
+*/
 
+/*
 .admin-sidebar {
     width: 260px;
     background: var(--bg-secondary);
@@ -20,6 +44,7 @@
     bottom: 0;
     z-index: 100;
 }
+*/
 
 .admin-sidebar-logo {
     padding: 0 1.5rem 2rem;
@@ -113,11 +138,19 @@
     border-color: rgba(255, 77, 77, 0.3);
 }
 
+/*
 .admin-main {
     flex: 1;
     margin-left: 260px;
     padding: 2rem 2.5rem;
     min-height: 100vh;
+}
+*/
+
+.admin-main {
+    /* Legacy override to allow Tailwind flex-1 to work */
+    margin-left: 0 !important;
+    padding: 0 !important;
 }
 
 /* Admin Header */
