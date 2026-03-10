@@ -12,6 +12,12 @@ export default function VehicleDetail() {
     const [isLightboxOpen, setIsLightboxOpen] = useState(false)
 
     useEffect(() => {
+        // Prevent page shift/scroll when lightbox is open
+        document.body.style.overflow = isLightboxOpen ? 'hidden' : ''
+        return () => { document.body.style.overflow = '' }
+    }, [isLightboxOpen])
+
+    useEffect(() => {
         fetch('/api/vehicles')
             .then(res => res.json())
             .then(data => {
@@ -453,14 +459,12 @@ export default function VehicleDetail() {
                 }
                 .lightbox-content {
                     position: relative;
-                    width: 100vw;
-                    max-width: 100vw;
-                    height: 100vh;
-                    max-height: 100vh;
+                    width: 100%;
+                    height: 100%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 1rem;
+                    padding: 0;
                     box-sizing: border-box;
                 }
 
@@ -507,8 +511,8 @@ export default function VehicleDetail() {
                     height: 100%;
                     max-width: 100%;
                     max-height: 100%;
-                    object-fit: contain;
-                    border-radius: 12px;
+                    object-fit: cover;
+                    border-radius: 0;
                     user-select: none;
                     filter: drop-shadow(0 25px 25px rgba(0,0,0,0.5));
                 }
