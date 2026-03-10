@@ -185,9 +185,9 @@ export default function VehicleDetail() {
                             </div>
                         </div>
 
-                        <div className="contact-actions mt-12 grid grid-cols-2 gap-4">
-                            <a href="tel:+905323497112" className="neon-btn text-center flex items-center justify-center">Hemen Ara</a>
-                            <a href={`https://wa.me/905323497112?text=${vehicle.title} ilanı hakkında bilgi alabilir miyim?`} className="neon-btn text-center flex items-center justify-center" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                        <div className="contact-actions mt-12 grid grid-cols-2 sm:grid-cols-2 gap-4">
+                            <a href="tel:+905323497112" className="neon-btn text-center flex items-center justify-center p-4">Hemen Ara</a>
+                            <a href={`https://wa.me/905323497112?text=${vehicle.title} ilanı hakkında bilgi alabilir miyim?`} className="neon-btn text-center flex items-center justify-center p-4" target="_blank" rel="noopener noreferrer">WhatsApp</a>
                         </div>
                     </div>
                 </div>
@@ -261,8 +261,9 @@ export default function VehicleDetail() {
             <style jsx>{`
                 .detail-grid {
                     display: grid;
-                    grid-template-columns: 1.5fr 1fr;
+                    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
                     gap: 3rem;
+                    width: 100%;
                 }
                 .main-image-container {
                     position: relative;
@@ -295,6 +296,12 @@ export default function VehicleDetail() {
                     grid-template-columns: repeat(4, 1fr);
                     gap: 1rem;
                 }
+                @media (max-width: 576px) {
+                    .thumbnail-grid {
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 0.5rem;
+                    }
+                }
                 .thumb {
                     position: relative;
                     aspect-ratio: 16/10;
@@ -303,6 +310,7 @@ export default function VehicleDetail() {
                     cursor: pointer;
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                     border: 2px solid transparent;
+                    min-width: 0;
                 }
                 .thumb:hover {
                     transform: translateY(-2px);
@@ -342,11 +350,19 @@ export default function VehicleDetail() {
                 .spec-row {
                     display: flex;
                     justify-content: space-between;
+                    align-items: flex-start;
+                    gap: 1rem;
                     padding-bottom: 0.8rem;
                     border-bottom: 1px solid rgba(255,255,255,0.05);
                 }
                 .spec-row span {
                     color: var(--text-secondary);
+                    flex-shrink: 0;
+                }
+                .spec-row strong {
+                    text-align: right;
+                    overflow-wrap: break-word;
+                    word-break: break-all;
                 }
                 
                 /* Description Card */

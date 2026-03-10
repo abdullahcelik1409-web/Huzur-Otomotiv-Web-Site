@@ -32,9 +32,8 @@
 html,
 body {
   width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-  position: relative;
+  margin: 0;
+  padding: 0;
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-main);
@@ -96,9 +95,12 @@ h4,
 
 /* Premium Utilities */
 .container {
+  width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .pt-32 {
