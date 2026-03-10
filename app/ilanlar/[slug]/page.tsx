@@ -512,12 +512,12 @@ export default function VehicleDetail() {
                 .lightbox-nav-btn.next { right: 0.75rem; }
 
                 .lightbox-img {
-                    width: 100%;
-                    height: 100%;
                     max-width: 100%;
                     max-height: 100%;
-                    object-fit: cover;
-                    border-radius: 0;
+                    width: auto !important;
+                    height: auto !important;
+                    object-fit: contain;
+                    border-radius: 8px;
                     user-select: none;
                     filter: drop-shadow(0 25px 25px rgba(0,0,0,0.5));
                 }
