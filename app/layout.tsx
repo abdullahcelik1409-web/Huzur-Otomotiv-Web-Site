@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   keywords: 'Huzur Otomotiv, ticari araç, kamyon, tır, İstanbul ticari araç, Maltepe otomotiv',
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export default function RootLayout({
   children,
 }: {

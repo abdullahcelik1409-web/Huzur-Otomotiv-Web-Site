@@ -8,6 +8,13 @@
     gap: 2rem;
 }
 
+@media (max-width: 480px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
 .feature-card {
     padding: 4rem 2.5rem;
     border-radius: 24px;
