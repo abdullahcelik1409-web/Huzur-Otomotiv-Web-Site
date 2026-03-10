@@ -7,6 +7,15 @@ import { supabase } from '@/lib/supabase'
 // GET: Tüm araçları listele (Admin için)
 export async function GET(request: NextRequest) {
     try {
+        // Database URL kontrolü
+        if (!process.env.DATABASE_URL) {
+            console.error('DATABASE_URL env variable is missing!')
+            return NextResponse.json(
+                { error: 'Veritabanı bağlantısı yapılandırılmamış' },
+                { status: 503 }
+            )
+        }
+
         // Oturum kontrolü
         const { data: { session } } = await supabase.auth.getSession()
         if (!session) {
@@ -27,6 +36,15 @@ export async function GET(request: NextRequest) {
 // POST: Yeni araç ekle
 export async function POST(request: NextRequest) {
     try {
+        // Database URL kontrolü
+        if (!process.env.DATABASE_URL) {
+            console.error('DATABASE_URL env variable is missing!')
+            return NextResponse.json(
+                { error: 'Veritabanı bağlantısı yapılandırılmamış' },
+                { status: 503 }
+            )
+        }
+
         const body = await request.json()
         const { title, brand, model, year, price, km, description, images, featured } = body
 
