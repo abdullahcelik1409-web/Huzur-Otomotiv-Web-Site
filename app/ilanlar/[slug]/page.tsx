@@ -259,6 +259,11 @@ export default function VehicleDetail() {
             )}
 
             <style jsx>{`
+                .detail-grid,
+                .detail-gallery,
+                .detail-info {
+                    min-width: 0;
+                }
                 .detail-grid {
                     display: grid;
                     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
@@ -295,6 +300,7 @@ export default function VehicleDetail() {
                     display: grid;
                     grid-template-columns: repeat(4, 1fr);
                     gap: 1rem;
+                    min-width: 0;
                 }
                 @media (max-width: 576px) {
                     .thumbnail-grid {

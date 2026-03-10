@@ -15,7 +15,8 @@
 
 .card-image {
     position: relative;
-    height: 220px;
+    width: 100%;
+    aspect-ratio: 16 / 10;
     overflow: hidden;
 }
 
@@ -63,10 +64,26 @@
 
 .card-footer {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 0.75rem;
     border-top: 1px solid var(--border-color);
     padding-top: 1.25rem;
+}
+
+.card-footer > * {
+    min-width: 0;
+}
+
+.card-price {
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+
+.details-link {
+    flex-shrink: 0;
 }
 
 .card-price {
