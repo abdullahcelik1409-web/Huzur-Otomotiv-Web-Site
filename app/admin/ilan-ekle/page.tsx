@@ -137,13 +137,13 @@ export default function AdminIlanEkle() {
                         onMouseEnter={(e) => {
                             if (currentStep >= step.number) {
                                 (e.currentTarget as HTMLElement).style.background = 'var(--accent-neon-muted)'
-                                (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'
+                                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'
                             }
                         }}
                         onMouseLeave={(e) => {
                             if (currentStep >= step.number) {
                                 (e.currentTarget as HTMLElement).style.background = 'var(--accent-neon-muted)'
-                                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
+                                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
                             }
                         }}
                     >
@@ -307,7 +307,7 @@ export default function AdminIlanEkle() {
                         </div>
 
                         <div style={{
-    border: '2px dashed var(--border-color)',
+                            border: '2px dashed var(--border-color)',
                             borderRadius: '12px',
                             padding: '40px 24px',
                             textAlign: 'center',
@@ -317,18 +317,18 @@ export default function AdminIlanEkle() {
                             transition: 'all 0.3s ease'
                         }}
                             onDragOver={(e) => {
-                                e.preventDefault();
-                                (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent-neon)'
-                                (e.currentTarget as HTMLElement).style.background = 'var(--accent-neon-muted)'
+                                e.preventDefault()
+                                ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--accent-neon)'
+                                ;(e.currentTarget as HTMLElement).style.background = 'var(--accent-neon-muted)'
                             }}
                             onDragLeave={(e) => {
                                 (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'
-                                (e.currentTarget as HTMLElement).style.background = 'rgba(204, 255, 0, 0.01)'
+                                ;(e.currentTarget as HTMLElement).style.background = 'rgba(204, 255, 0, 0.01)'
                             }}
                             onDrop={(e) => {
-                                e.preventDefault();
-                                (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'
-                                (e.currentTarget as HTMLElement).style.background = 'rgba(204, 255, 0, 0.01)'
+                                e.preventDefault()
+                                ;(e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'
+                                ;(e.currentTarget as HTMLElement).style.background = 'rgba(204, 255, 0, 0.01)'
                                 const input = (e.currentTarget as HTMLElement).querySelector('input') as HTMLInputElement
                                 if (input && e.dataTransfer?.files) {
                                     input.files = e.dataTransfer.files
@@ -388,8 +388,7 @@ export default function AdminIlanEkle() {
                                                 borderRadius: '8px',
                                                 overflow: 'hidden',
                                                 border: '1px solid var(--border-color)',
-                                                position: 'relative',
-                                                group: 'hover'
+                                                position: 'relative'
                                             }}
                                             onMouseEnter={(e) => {
                                                 const btn = (e.currentTarget as HTMLElement).querySelector('button') as HTMLElement
@@ -494,11 +493,11 @@ export default function AdminIlanEkle() {
                                 onClick={() => setIsFeatured(!isFeatured)}
                                 onMouseEnter={(e) => {
                                     (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent-neon)'
-                                    (e.currentTarget as HTMLElement).style.background = 'rgba(204, 255, 0, 0.02)'
+                                    ;(e.currentTarget as HTMLElement).style.background = 'rgba(204, 255, 0, 0.02)'
                                 }}
                                 onMouseLeave={(e) => {
                                     (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'
-                                    (e.currentTarget as HTMLElement).style.background = 'var(--secondary-bg)'
+                                    ;(e.currentTarget as HTMLElement).style.background = 'var(--secondary-bg)'
                                 }}
                             >
                                 <div style={{
@@ -548,51 +547,6 @@ export default function AdminIlanEkle() {
                         </div>
                     </div>
                 )}
-            </form>
-        </div>
-    )
-}
-
-                    <div className="admin-card space-y-8">
-                        <div className="space-y-2">
-                            <label className="stat-label">Araç Açıklaması</label>
-                            <textarea name="description" className="w-full bg-black border border-white/5 rounded-xl p-6 outline-none focus:border-neon transition-all font-medium min-h-[160px] text-secondary" placeholder="Araç hakkında detaylı bilgi girin..." required></textarea>
-                        </div>
-
-                        <div className="flex items-center gap-4 p-6 bg-black/50 border border-white/5 rounded-2xl group hover:border-neon/20 transition-all cursor-pointer">
-                            <div className="relative flex items-center">
-                                <input
-                                    type="checkbox"
-                                    id="featured"
-                                    checked={isFeatured}
-                                    onChange={(e) => setIsFeatured(e.target.checked)}
-                                    className="peer h-6 w-6 opacity-0 absolute cursor-pointer"
-                                />
-                                <div className="h-6 w-6 border-2 border-white/10 rounded-md peer-checked:bg-neon peer-checked:border-neon transition-all flex items-center justify-center">
-                                    <span className="material-symbols-outlined text-black text-lg font-black scale-0 peer-checked:scale-100 transition-transform">check</span>
-                                </div>
-                            </div>
-                            <label htmlFor="featured" className="font-bold text-secondary group-hover:text-white transition-colors cursor-pointer select-none">
-                                Bu İlanı <span className="text-neon italic">"Öne Çıkanlar"</span> Bölümünde Göster
-                            </label>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Submit Section */}
-                <div className="flex items-center gap-4 pt-10">
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="btn btn-primary"
-                        style={{ flex: 1, height: '56px', fontSize: '14px' }}
-                    >
-                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-                            {loading ? 'sync' : 'check'}
-                        </span>
-                        <span>{loading ? 'Yayınlanıyor...' : 'İlanı Yayınla'}</span>
-                    </button>
-                </div>
             </form>
         </div>
     )

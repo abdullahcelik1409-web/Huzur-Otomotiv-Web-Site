@@ -1,171 +1,169 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import './login.css'
+import { supabase } from '@/lib/supabase'
 
-export default function LoginPage() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+export default function AdminLogin() {
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState<string | null>(null)
+    const [message, setMessage] = useState({ type: '', text: '' })
     const router = useRouter()
 
-    useEffect(() => {
-        const checkSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
-            if (session) router.push('/admin')
-        }
-        checkSession()
-    }, [router])
-
-    const handleLogin = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setLoading(true)
-        setError(null)
+        setMessage({ type: '', text: '' })
+
+        const formData = new FormData(e.currentTarget)
+        const email = formData.get('email') as string
+        const password = formData.get('password') as string
 
         try {
-            const { error: authError } = await supabase.auth.signInWithPassword({
+            const { error } = await supabase.auth.signInWithPassword({
                 email,
-                password,
+                password
             })
 
-            if (authError) throw authError
+            if (error) throw error
 
-            router.push('/admin')
-            router.refresh()
+            setMessage({ type: 'success', text: 'Giriş başarılı! Yönlendiriliyorsunuz...' })
+            setTimeout(() => router.push('/admin'), 1500)
+
         } catch (err: any) {
-            setError('Giriş yapılamadı. Bilgilerinizi kontrol edin.')
+            setMessage({ type: 'error', text: err.message || 'Giriş yapılamadı' })
         } finally {
             setLoading(false)
         }
     }
 
     return (
-        <div className="login-container">
-            <div className="login-box">
+        <div style={{
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'var(--primary-bg)',
+            padding: '24px'
+        }}>
+            <div style={{
+                width: '100%',
+                maxWidth: '400px',
+                background: 'var(--secondary-bg)',
+                border: '1px solid var(--border-color)',
+                borderRadius: '16px',
+                padding: '48px 32px',
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)'
+            }}>
                 {/* Header */}
-                <div className="login-header">
-                    <div className="login-icon">
-                        <span className="material-symbols-outlined">directions_car</span>
+                <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                    <div style={{
+                        width: '64px',
+                        height: '64px',
+                        background: 'var(--accent-neon-muted)',
+                        borderRadius: '16px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: '0 auto 16px',
+                        color: 'var(--accent-neon)',
+                        fontSize: '32px'
+                    }}>
+                        <span className="material-symbols-outlined">admin_panel_settings</span>
                     </div>
-                    <h1>Huzur <span className="neon">Otomotiv</span></h1>
-                    <p>Yönetici Paneli Erişimi</p>
+                    <h1 style={{
+                        fontSize: '24px',
+                        fontWeight: 700,
+                        color: 'var(--text-primary)',
+                        marginBottom: '8px'
+                    }}>
+                        Admin <span style={{ color: 'var(--accent-neon)' }}>Giriş</span>
+                    </h1>
+                    <p style={{
+                        fontSize: '14px',
+                        color: 'var(--text-secondary)',
+                        lineHeight: '1.5'
+                    }}>
+                        Yönetim paneline erişmek için giriş yapın
+                    </p>
                 </div>
 
-                {/* Login Form */}
-                <form onSubmit={handleLogin} className="login-form">
-                    {error && (
-                        <div className="error-message">
-                            <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>error</span>
-                            <span>{error}</span>
-                        </div>
-                    )}
+                {/* Message Alert */}
+                {message.text && (
+                    <div style={{
+                        padding: '16px',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        marginBottom: '24px',
+                        background: message.type === 'success' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                        border: '1px solid ' + (message.type === 'success' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'),
+                        color: message.type === 'success' ? '#22c55e' : '#ef4444'
+                    }}>
+                        <span className="material-symbols-outlined">{message.type === 'success' ? 'check_circle' : 'error'}</span>
+                        <span style={{ fontSize: '13px', fontWeight: 600 }}>{message.text}</span>
+                    </div>
+                )}
 
-                    {/* Email Field */}
+                {/* Login Form */}
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     <div className="form-group">
                         <label className="form-label">E-posta Adresi</label>
-                        <div className="form-input-wrapper">
-                            <span className="form-input-icon material-symbols-outlined">mail</span>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="input-base"
-                                placeholder="admin@huzurotomotiv.com"
-                                required
-                                disabled={loading}
-                            />
-                        </div>
+                        <input
+                            name="email"
+                            type="email"
+                            className="input-base"
+                            placeholder="admin@huzurotomotiv.com"
+                            required
+                            disabled={loading}
+                            autoComplete="email"
+                        />
                     </div>
 
-                    {/* Password Field */}
                     <div className="form-group">
                         <label className="form-label">Şifre</label>
-                        <div className="form-input-wrapper">
-                            <span className="form-input-icon material-symbols-outlined">lock</span>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="input-base"
-                                placeholder="••••••••"
-                                required
-                                disabled={loading}
-                            />
-                        </div>
+                        <input
+                            name="password"
+                            type="password"
+                            className="input-base"
+                            placeholder="••••••••"
+                            required
+                            disabled={loading}
+                            autoComplete="current-password"
+                        />
                     </div>
 
-                    {/* Submit Button */}
                     <button
                         type="submit"
-                        className="login-btn"
+                        className="btn btn-primary"
                         disabled={loading}
+                        style={{
+                            height: '48px',
+                            fontSize: '14px',
+                            fontWeight: 600,
+                            marginTop: '8px'
+                        }}
                     >
-                        {loading ? (
-                            <>
-                                <span className="spinner"></span>
-                                Giriş Yapılıyor...
-                            </>
-                        ) : (
-                            'Giriş Yap'
-                        )}
+                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                            {loading ? 'sync' : 'login'}
+                        </span>
+                        <span>{loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}</span>
                     </button>
                 </form>
 
-                {/* Footer Note */}
+                {/* Footer */}
                 <div style={{
-                    marginTop: '24px',
+                    marginTop: '32px',
                     paddingTop: '24px',
                     borderTop: '1px solid var(--border-color)',
                     textAlign: 'center'
                 }}>
                     <p style={{
-                        fontSize: '11px',
+                        fontSize: '12px',
                         color: 'var(--text-secondary)',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
+                        lineHeight: '1.5'
                     }}>
-                        Giriş bilgileriniz güvenli bir şekilde korunmaktadır
-                    </p>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="btn-base btn-primary w-full !h-14 !text-base group"
-                        >
-                            {loading ? (
-                                <span className="material-symbols-outlined animate-spin">sync</span>
-                            ) : (
-                                <>
-                                    <span>Giriş Yap</span>
-                                    <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                                </>
-                            )}
-                        </button>
-                    </form>
-                </div>
-
-                {/* Footer Note */}
-                <div style={{
-                    marginTop: '24px',
-                    paddingTop: '24px',
-                    borderTop: '1px solid var(--border-color)',
-                    textAlign: 'center'
-                }}>
-                    <p style={{
-                        fontSize: '11px',
-                        color: 'var(--text-secondary)',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
-                    }}>
-                        Giriş bilgileriniz güvenli bir şekilde korunmaktadır
+                        © 2024 Huzur Otomotiv. Tüm hakları saklıdır.
                     </p>
                 </div>
             </div>
