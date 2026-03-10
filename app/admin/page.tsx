@@ -72,143 +72,156 @@ export default function AdminDashboard() {
     const passiveVehicles = vehicles.filter(v => v.status === 'passive').length
 
     return (
-        <main className="p-4 space-y-6 pb-24 lg:pb-10 max-w-7xl mx-auto">
-            {/* Header (Desktop) */}
-            <div className="hidden lg:flex items-center justify-between mb-8">
+        <div className="space-y-8">
+            {/* Page Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Hoş Geldiniz, Admin</h1>
-                    <p className="text-secondary mt-1">Sistemdeki araç ilanlarını buradan yönetebilirsiniz.</p>
+                    <h1 className="page-title">Genel Bakış</h1>
+                    <p className="text-secondary text-sm mt-1">İlanlarınızı ve istatistiklerinizi buradan yönetin.</p>
                 </div>
-                <Link href="/admin/ilan-ekle" className="neon-btn">
-                    <span className="material-symbols-outlined mr-2">add_box</span>
+                <Link href="/admin/ilan-ekle" className="btn-base btn-primary btn-mobile-full">
+                    <span className="material-symbols-outlined">add_box</span>
                     Yeni İlan Ekle
                 </Link>
             </div>
 
-            {/* Statistics Section */}
-            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="glass p-5 rounded-2xl flex items-center justify-between group hover:border-neon transition-all">
+            {/* Stats Grid */}
+            <div className="grid-12">
+                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex items-center justify-between">
                     <div>
-                        <p className="text-sm font-medium text-secondary">Toplam İlan</p>
-                        <h3 className="text-3xl font-bold mt-1 text-white">{totalVehicles}</h3>
-                        <span className="text-xs font-bold text-neon flex items-center gap-1 mt-1">
-                            <span className="material-symbols-outlined text-sm">trending_up</span> Güncel
-                        </span>
+                        <p className="text-secondary text-xs font-bold uppercase tracking-wider">Toplam İlan</p>
+                        <h3 className="text-2xl font-bold mt-1">{totalVehicles}</h3>
                     </div>
-                    <div className="size-14 bg-neon/10 rounded-xl flex items-center justify-center text-neon group-hover:bg-neon group-hover:text-black transition-all">
-                        <span className="material-symbols-outlined text-3xl">analytics</span>
+                    <div className="p-3 bg-neon/10 text-neon rounded-lg">
+                        <span className="material-symbols-outlined">analytics</span>
                     </div>
                 </div>
-
-                <div className="glass p-5 rounded-2xl flex items-center justify-between group hover:border-neon transition-all">
+                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex items-center justify-between">
                     <div>
-                        <p className="text-sm font-medium text-secondary">Aktif İlan</p>
-                        <h3 className="text-3xl font-bold mt-1 text-white">{activeVehicles}</h3>
-                        <span className="text-xs font-bold text-neon flex items-center gap-1 mt-1">
-                            <span className="material-symbols-outlined text-sm">check_circle</span> Yayında
-                        </span>
+                        <p className="text-secondary text-xs font-bold uppercase tracking-wider">Aktif</p>
+                        <h3 className="text-2xl font-bold mt-1">{activeVehicles}</h3>
                     </div>
-                    <div className="size-14 bg-neon/10 rounded-xl flex items-center justify-center text-neon group-hover:bg-neon group-hover:text-black transition-all">
-                        <span className="material-symbols-outlined text-3xl">visibility</span>
+                    <div className="p-3 bg-green-500/10 text-green-500 rounded-lg">
+                        <span className="material-symbols-outlined">check_circle</span>
                     </div>
                 </div>
-
-                <div className="glass p-5 rounded-2xl flex items-center justify-between group hover:border-[#ffcc00] transition-all">
+                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex items-center justify-between">
                     <div>
-                        <p className="text-sm font-medium text-secondary">Öne Çıkan</p>
-                        <h3 className="text-3xl font-bold mt-1 text-white">{featuredVehicles}</h3>
-                        <span className="text-xs font-bold text-[#ffcc00] flex items-center gap-1 mt-1">
-                            <span className="material-symbols-outlined text-sm">star</span> Premium
-                        </span>
+                        <p className="text-secondary text-xs font-bold uppercase tracking-wider">Öne Çıkan</p>
+                        <h3 className="text-2xl font-bold mt-1">{featuredVehicles}</h3>
                     </div>
-                    <div className="size-14 bg-[#ffcc00]/10 rounded-xl flex items-center justify-center text-[#ffcc00] group-hover:bg-[#ffcc00] group-hover:text-black transition-all">
-                        <span className="material-symbols-outlined text-3xl">auto_awesome</span>
+                    <div className="p-3 bg-amber-500/10 text-amber-500 rounded-lg">
+                        <span className="material-symbols-outlined">auto_awesome</span>
                     </div>
                 </div>
-
-                <div className="glass p-5 rounded-2xl flex items-center justify-between group hover:border-red-500 transition-all">
+                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex items-center justify-between">
                     <div>
-                        <p className="text-sm font-medium text-secondary">Pasif İlan</p>
-                        <h3 className="text-3xl font-bold mt-1 text-white">{passiveVehicles}</h3>
-                        <span className="text-xs font-bold text-red-500 flex items-center gap-1 mt-1">
-                            <span className="material-symbols-outlined text-sm">pause_circle</span> Beklemede
-                        </span>
+                        <p className="text-secondary text-xs font-bold uppercase tracking-wider">Pasif</p>
+                        <h3 className="text-2xl font-bold mt-1">{passiveVehicles}</h3>
                     </div>
-                    <div className="size-14 bg-red-500/10 rounded-xl flex items-center justify-center text-red-500 group-hover:bg-red-500 group-hover:text-white transition-all">
-                        <span className="material-symbols-outlined text-3xl">disabled_by_default</span>
+                    <div className="p-3 bg-red-500/10 text-red-500 rounded-lg">
+                        <span className="material-symbols-outlined">pause_circle</span>
                     </div>
                 </div>
-            </section>
-
-            {/* Quick Actions (Mobile) */}
-            <section className="lg:hidden">
-                <Link href="/admin/ilan-ekle" className="w-full flex items-center gap-4 bg-neon text-black p-4 rounded-xl font-bold shadow-lg shadow-neon/20 hover:brightness-110 active:scale-95 transition-all">
-                    <div className="bg-black/20 p-2 rounded-lg">
-                        <span className="material-symbols-outlined">add_box</span>
-                    </div>
-                    Yeni İlan Ekle
-                </Link>
-            </section>
+            </div>
 
             {/* List Section */}
-            <section>
-                <div className="flex items-center justify-between mb-4 px-1">
-                    <h2 className="text-xl font-bold text-white">Son İlanlar</h2>
-                    <p className="text-secondary text-sm">{vehicles.length} kayıt bulundu</p>
+            <section className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <h2 className="section-title">Son Eklenen İlanlar</h2>
+                    <span className="text-secondary text-xs">{vehicles.length} İlan</span>
                 </div>
 
                 {loading ? (
-                    <div className="p-10 text-center text-secondary glass rounded-2xl">
-                        <div className="inline-block animate-spin size-6 border-2 border-neon border-t-transparent rounded-full mb-2"></div>
-                        <p>Yükleniyor...</p>
-                    </div>
-                ) : vehicles.length === 0 ? (
-                    <div className="p-10 text-center text-secondary glass rounded-2xl">
-                        <span className="material-symbols-outlined text-4xl mb-2 opacity-20">inventory_2</span>
-                        <p>Henüz ilan eklenmemiş.</p>
+                    <div className="admin-card text-center py-12">
+                        <div className="inline-block animate-spin size-6 border-2 border-neon border-t-transparent rounded-full mb-4"></div>
+                        <p className="text-secondary">Veriler yükleniyor...</p>
                     </div>
                 ) : (
-                    <div className="space-y-3">
-                        {vehicles.map((v) => (
-                            <div key={v.id} className="glass p-3 rounded-xl hover:border-neon/50 transition-all border border-white/5">
-                                <div className="flex gap-4">
-                                    <div className="size-20 rounded-lg bg-tertiary overflow-hidden flex-shrink-0 border border-white/5">
-                                        <img className="size-full object-cover" src={v.images[0] || '/placeholder.png'} alt={v.title} />
-                                    </div>
-                                    <div className="flex-1 min-w-0 flex flex-col justify-between">
-                                        <div>
+                    <>
+                        {/* Desktop Table View */}
+                        <div className="hidden lg:block responsive-table-container">
+                            <table className="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Araç</th>
+                                        <th>Yıl</th>
+                                        <th>Fiyat</th>
+                                        <th>Kilometre</th>
+                                        <th>İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {vehicles.map((v) => (
+                                        <tr key={v.id}>
+                                            <td className="w-1/3">
+                                                <div className="flex items-center gap-3">
+                                                    <img src={v.images[0] || '/placeholder.png'} className="size-12 rounded object-cover border border-white/5" alt="" />
+                                                    <div className="truncate">
+                                                        <p className="font-bold text-white truncate">{v.title}</p>
+                                                        <p className="text-xs text-secondary">{v.brand} {v.model}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{v.year}</td>
+                                            <td className="text-neon font-bold">{v.price.toLocaleString()} ₺</td>
+                                            <td className="text-secondary">{v.km.toLocaleString()} km</td>
+                                            <td>
+                                                <div className="flex gap-2">
+                                                    <button className="btn-base btn-ghost !p-2">
+                                                        <span className="material-symbols-outlined text-sm">edit</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(v.id, v.title)}
+                                                        className="btn-base btn-ghost !p-2 !text-red-500/70 hover:!bg-red-500/10"
+                                                        disabled={deleting === v.id}
+                                                    >
+                                                        <span className="material-symbols-outlined text-sm">{deleting === v.id ? 'sync' : 'delete'}</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Mobile & Tablet Card View */}
+                        <div className="lg:hidden space-y-3">
+                            {vehicles.map((v) => (
+                                <div key={v.id} className="admin-card p-4">
+                                    <div className="flex gap-4">
+                                        <img src={v.images[0] || '/placeholder.png'} className="size-16 rounded object-cover" alt="" />
+                                        <div className="flex-1 min-w-0">
                                             <h4 className="font-bold text-white truncate">{v.title}</h4>
-                                            <p className="text-neon font-bold text-sm mt-0.5">{v.price.toLocaleString()} ₺</p>
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex gap-2">
-                                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${v.featured ? 'bg-[#ffcc00]/20 text-[#ffcc00]' : 'bg-neon/10 text-neon'}`}>
-                                                    {v.featured ? 'Premium' : 'Aktif'}
-                                                </span>
-                                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-secondary font-bold uppercase tracking-wider">
-                                                    {v.year}
+                                            <p className="text-neon font-bold mt-1">{v.price.toLocaleString()} ₺</p>
+                                            <div className="flex items-center gap-2 mt-2">
+                                                <span className="text-[10px] uppercase font-bold text-secondary bg-white/5 px-2 py-0.5 rounded italic">
+                                                    {v.year} • {v.km.toLocaleString()} km
                                                 </span>
                                             </div>
-                                            <div className="flex gap-2">
-                                                <button className="p-1.5 glass rounded-lg text-secondary hover:text-neon transition-colors">
-                                                    <span className="material-symbols-outlined text-sm">edit</span>
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(v.id, v.title)}
-                                                    className="p-1.5 glass rounded-lg text-red-500/70 hover:text-red-500 hover:bg-red-500/10 transition-colors"
-                                                    disabled={deleting === v.id}
-                                                >
-                                                    <span className="material-symbols-outlined text-sm">{deleting === v.id ? 'sync' : 'delete'}</span>
-                                                </button>
-                                            </div>
                                         </div>
+                                    </div>
+                                    <div className="flex gap-2 mt-4 pt-4 border-t border-white/5">
+                                        <button className="btn-base btn-secondary flex-1">
+                                            <span className="material-symbols-outlined text-sm">edit</span>
+                                            Düzenle
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(v.id, v.title)}
+                                            className="btn-base btn-danger flex-1"
+                                            disabled={deleting === v.id}
+                                        >
+                                            <span className="material-symbols-outlined text-sm">delete</span>
+                                            Sil
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    </>
                 )}
             </section>
-        </main>
+        </div>
     )
 }
