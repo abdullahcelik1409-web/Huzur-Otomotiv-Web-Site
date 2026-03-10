@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
 import './admin.css'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -15,25 +16,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     useEffect(() => {
         if (isLoginPage) {
-            setAuthenticated(false)
+            setAuthenticated(true) // Don't block login page
             return
         }
 
-        fetch('/api/auth/check')
-            .then(res => {
-                if (!res.ok) {
-                    router.push('/admin/login')
-                    return
-                }
-                setAuthenticated(true)
-            })
-            .catch(() => {
+        const checkAuth = async () => {
+            const { data: { session } } = await supabase.auth.getSession()
+            if (!session) {
                 router.push('/admin/login')
-            })
+                setAuthenticated(false)
+            } else {
+                setAuthenticated(true)
+            }
+        }
+
+        checkAuth()
     }, [pathname, isLoginPage, router])
 
     const handleLogout = async () => {
-        await fetch('/api/auth/logout', { method: 'POST' })
+        await supabase.auth.signOut()
         router.push('/admin/login')
     }
 

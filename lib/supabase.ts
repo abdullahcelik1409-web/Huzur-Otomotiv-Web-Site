@@ -2,28 +2,21 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
 let _supabase: SupabaseClient | null = null;
 
-/**
- * Supabase Lazy-Loading Proxy.
- * Client sadece bir metod çağrıldığında oluşturulur.
- */
-export const supabase = new Proxy({} as SupabaseClient, {
-    get: (target, prop) => {
-        return (...args: any[]) => {
-            if (!_supabase) {
-                const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-                const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-                if (!url || !key) {
-                    return Promise.resolve({ data: { session: null }, error: null });
-                }
-                _supabase = createClient(url, key);
-            }
-
-            const member = (_supabase as any)[prop];
-            if (typeof member === 'function') {
-                return member.apply(_supabase, args);
-            }
-            return member;
-        };
+export const supabase = (() => {
+    if (typeof window === 'undefined') {
+        // SSR Safe dummy client
+        return {} as SupabaseClient;
     }
-});
+
+    if (!_supabase) {
+        const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+        if (!url || !key) {
+            console.warn('Supabase env variables missing');
+            return {} as SupabaseClient;
+        }
+        _supabase = createClient(url, key);
+    }
+    return _supabase;
+})();
