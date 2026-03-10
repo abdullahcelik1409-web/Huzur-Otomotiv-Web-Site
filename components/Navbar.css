@@ -92,24 +92,19 @@
 .mobile-menu {
     position: fixed;
     top: 0;
-    right: 0;
+    left: 0;
     width: 100%;
     height: 100vh;
     background: var(--bg-primary);
     z-index: 999;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     transition: var(--transition-smooth);
-    transform: translateX(100%);
-    visibility: hidden;
-    pointer-events: none;
 }
 
 .mobile-open .mobile-menu {
-    transform: translateX(0);
-    visibility: visible;
-    pointer-events: auto;
+    display: flex;
 }
 
 .mobile-open .mobile-toggle span:nth-child(1) {

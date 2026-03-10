@@ -22,7 +22,7 @@
 
 .footer-desc {
     color: var(--text-secondary);
-    max-width: 400px;
+    max-width: 100%;
     font-size: 0.95rem;
 }
 
