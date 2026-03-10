@@ -201,42 +201,49 @@ export default function VehicleDetail() {
 
             {/* Lightbox Modal */}
             {isLightboxOpen && (
-                <div className="lightbox-overlay">
-                    <button
-                        className="lightbox-close-btn"
-                        onClick={() => setIsLightboxOpen(false)}
-                        aria-label="Close fullscreen"
+                <div
+                    className="lightbox-overlay"
+                    onClick={() => setIsLightboxOpen(false)}
+                >
+                    <div
+                        className="lightbox-content"
+                        onClick={(e) => e.stopPropagation()}
                     >
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
+                        <button
+                            className="lightbox-close-btn"
+                            onClick={() => setIsLightboxOpen(false)}
+                            aria-label="Close fullscreen"
+                        >
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
 
-                    <button
-                        className="lightbox-nav-btn prev"
-                        onClick={prevImage}
-                        aria-label="Previous image"
-                    >
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
-                    </button>
+                        <button
+                            className="lightbox-nav-btn prev"
+                            onClick={prevImage}
+                            aria-label="Previous image"
+                        >
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+                        </button>
 
-                    <div className="lightbox-content">
                         <img
                             src={vehicle.images[activeIndex]}
                             alt={`${vehicle.title} Fullscreen`}
                             className="lightbox-img"
                             draggable={false}
                         />
+
+                        <button
+                            className="lightbox-nav-btn next"
+                            onClick={nextImage}
+                            aria-label="Next image"
+                        >
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                        </button>
+
                         <div className="lightbox-counter">
                             {activeIndex + 1} <span>/</span> {vehicle.images.length}
                         </div>
                     </div>
-
-                    <button
-                        className="lightbox-nav-btn next"
-                        onClick={nextImage}
-                        aria-label="Next image"
-                    >
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
-                    </button>
                 </div>
             )}
 
@@ -441,12 +448,24 @@ export default function VehicleDetail() {
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    padding: 1.25rem;
+                    overflow: hidden;
                 }
+                .lightbox-content {
+                    position: relative;
+                    width: min(95vw, 1152px);
+                    max-height: 90vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 1rem;
+                }
+
                 .lightbox-close-btn {
                     position: absolute;
-                    top: 1.5rem;
-                    right: 2rem;
-                    color: rgba(255,255,255,0.5);
+                    top: 0.75rem;
+                    right: 0.75rem;
+                    color: rgba(255,255,255,0.6);
                     background: none;
                     border: none;
                     padding: 0.5rem;
@@ -455,60 +474,56 @@ export default function VehicleDetail() {
                     transition: color 0.3s ease;
                 }
                 .lightbox-close-btn:hover { color: white; }
+
                 .lightbox-nav-btn {
                     position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
-                    width: 64px;
-                    height: 64px;
+                    width: 54px;
+                    height: 54px;
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background: rgba(255, 255, 255, 0.1);
-                    color: rgba(255, 255, 255, 0.5);
+                    background: rgba(255, 255, 255, 0.12);
+                    color: rgba(255, 255, 255, 0.65);
                     border: none;
                     cursor: pointer;
                     z-index: 50;
-                    transition: all 0.3s ease;
+                    transition: all 0.25s ease;
                 }
                 .lightbox-nav-btn:hover {
                     background: var(--accent-neon);
                     color: black;
                 }
-                .lightbox-nav-btn.prev { left: 2rem; }
-                .lightbox-nav-btn.next { right: 2rem; }
-                
-                .lightbox-content {
-                    width: 100%;
-                    max-width: 1152px;
-                    height: 85vh;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 1rem;
-                }
+                .lightbox-nav-btn.prev { left: 0.75rem; }
+                .lightbox-nav-btn.next { right: 0.75rem; }
+
                 .lightbox-img {
-                    max-height: 100%;
+                    width: 100%;
+                    height: 100%;
                     max-width: 100%;
+                    max-height: 100%;
                     object-fit: contain;
-                    border-radius: 8px;
+                    border-radius: 12px;
                     user-select: none;
                     filter: drop-shadow(0 25px 25px rgba(0,0,0,0.5));
                 }
                 .lightbox-counter {
-                    color: rgba(255,255,255,0.6);
-                    margin-top: 1.5rem;
+                    position: absolute;
+                    bottom: 0.75rem;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    color: rgba(255,255,255,0.8);
                     letter-spacing: 0.1em;
-                    font-size: 0.875rem;
+                    font-size: 0.9rem;
                     font-weight: 500;
-                    background: rgba(0,0,0,0.4);
+                    background: rgba(0,0,0,0.45);
                     padding: 0.5rem 1rem;
                     border-radius: 9999px;
                     backdrop-filter: blur(8px);
                 }
-                .lightbox-counter span { margin: 0 0.5rem; color: rgba(255,255,255,0.3); }
+                .lightbox-counter span { margin: 0 0.5rem; color: rgba(255,255,255,0.35); }
 
                 @media (max-width: 992px) {
                     .detail-grid {
@@ -546,7 +561,11 @@ export default function VehicleDetail() {
                         top: 1rem;
                         right: 1rem;
                     }
-                    .lightbox-content { max-width: 95vw; height: 80vh; }
+                    .lightbox-content {
+                        max-width: 95vw;
+                        max-height: 85vh;
+                        padding: 0.75rem;
+                    }
                     .description-card {
                         padding: 1.25rem;
                     }
