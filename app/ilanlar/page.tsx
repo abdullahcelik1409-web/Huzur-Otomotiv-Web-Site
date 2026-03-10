@@ -9,7 +9,7 @@ export default function Ilanlar() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch('/cars.json')
+        fetch('/api/vehicles')
             .then(res => res.json())
             .then(data => {
                 setVehicles(data.cars || [])

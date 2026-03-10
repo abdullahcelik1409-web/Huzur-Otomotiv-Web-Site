@@ -12,10 +12,10 @@ export default function VehicleDetail() {
     const [isLightboxOpen, setIsLightboxOpen] = useState(false)
 
     useEffect(() => {
-        fetch('/cars.json')
+        fetch('/api/vehicles')
             .then(res => res.json())
             .then(data => {
-                const found = data.cars.find((c: any) => c.slug === params.slug)
+                const found = (data.cars || []).find((c: any) => c.slug === params.slug)
                 setVehicle(found)
                 setLoading(false)
             })

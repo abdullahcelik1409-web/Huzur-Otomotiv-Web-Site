@@ -10,7 +10,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/cars.json')
+    fetch('/api/vehicles')
       .then(res => res.json())
       .then(data => {
         const featured = (data.cars || []).filter((car: any) => car.featured)
