@@ -23,9 +23,7 @@
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -34,8 +32,6 @@
 html,
 body {
   width: 100%;
-  overflow-x: hidden;
-  position: relative;
   margin: 0;
   padding: 0;
   background: var(--bg-primary);
@@ -46,8 +42,6 @@ body {
   scroll-behavior: smooth;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  touch-action: pan-y;
-  -webkit-overflow-scrolling: touch;
 }
 
 section {
@@ -253,8 +247,7 @@ h1.section-title,
 
 @media (max-width: 768px) {
   .container {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding: 0 1rem;
   }
 
   .section-title {
