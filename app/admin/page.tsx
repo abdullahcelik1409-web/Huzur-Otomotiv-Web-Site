@@ -72,55 +72,70 @@ export default function AdminDashboard() {
     const passiveVehicles = vehicles.filter(v => v.status === 'passive').length
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-12">
             {/* Page Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/5">
                 <div>
-                    <h1 className="page-title">Genel Bakış</h1>
-                    <p className="text-secondary text-sm mt-1">İlanlarınızı ve istatistiklerinizi buradan yönetin.</p>
+                    <h1 className="page-title !text-3xl tracking-tight">İstatistiki <span className="text-neon">Veriler</span></h1>
+                    <p className="text-secondary text-sm mt-2 opacity-60">Mağazanızın güncel performans özetini görün.</p>
                 </div>
-                <Link href="/admin/ilan-ekle" className="btn-base btn-primary btn-mobile-full">
-                    <span className="material-symbols-outlined">add_box</span>
-                    Yeni İlan Ekle
+                <Link href="/admin/ilan-ekle" className="btn-base btn-primary !h-12 !px-8 shadow-xl hover:scale-[1.02]">
+                    <span className="material-symbols-outlined">add_circle</span>
+                    Hemen İlan Ekle
                 </Link>
             </div>
 
             {/* Stats Grid */}
             <div className="grid-12">
-                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex items-center justify-between">
-                    <div>
-                        <p className="text-secondary text-xs font-bold uppercase tracking-wider">Toplam İlan</p>
-                        <h3 className="text-2xl font-bold mt-1">{totalVehicles}</h3>
+                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex flex-col gap-6 group">
+                    <div className="flex items-center justify-between">
+                        <div className="size-12 bg-neon/10 text-neon rounded-xl flex items-center justify-center border border-neon/20 group-hover:bg-neon group-hover:text-black transition-all duration-300">
+                            <span className="material-symbols-outlined text-2xl font-black">analytics</span>
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-secondary opacity-40">Veri Analizi</span>
                     </div>
-                    <div className="p-3 bg-neon/10 text-neon rounded-lg">
-                        <span className="material-symbols-outlined">analytics</span>
+                    <div>
+                        <p className="text-secondary text-xs font-black uppercase tracking-widest opacity-60 mb-1">Toplam İlan</p>
+                        <h3 className="text-4xl font-black text-white">{totalVehicles}</h3>
                     </div>
                 </div>
-                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex items-center justify-between">
-                    <div>
-                        <p className="text-secondary text-xs font-bold uppercase tracking-wider">Aktif</p>
-                        <h3 className="text-2xl font-bold mt-1">{activeVehicles}</h3>
+
+                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex flex-col gap-6 group">
+                    <div className="flex items-center justify-between">
+                        <div className="size-12 bg-green-500/10 text-green-500 rounded-xl flex items-center justify-center border border-green-500/20 group-hover:bg-green-500 group-hover:text-black transition-all duration-300">
+                            <span className="material-symbols-outlined text-2xl font-black">check_circle</span>
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-secondary opacity-40">Canlı Yayında</span>
                     </div>
-                    <div className="p-3 bg-green-500/10 text-green-500 rounded-lg">
-                        <span className="material-symbols-outlined">check_circle</span>
+                    <div>
+                        <p className="text-secondary text-xs font-black uppercase tracking-widest opacity-60 mb-1">Aktif İlanlar</p>
+                        <h3 className="text-4xl font-black text-white">{activeVehicles}</h3>
                     </div>
                 </div>
-                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex items-center justify-between">
-                    <div>
-                        <p className="text-secondary text-xs font-bold uppercase tracking-wider">Öne Çıkan</p>
-                        <h3 className="text-2xl font-bold mt-1">{featuredVehicles}</h3>
+
+                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex flex-col gap-6 group">
+                    <div className="flex items-center justify-between">
+                        <div className="size-12 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center border border-amber-500/20 group-hover:bg-amber-500 group-hover:text-black transition-all duration-300">
+                            <span className="material-symbols-outlined text-2xl font-black">auto_awesome</span>
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-secondary opacity-40">Vitrinde</span>
                     </div>
-                    <div className="p-3 bg-amber-500/10 text-amber-500 rounded-lg">
-                        <span className="material-symbols-outlined">auto_awesome</span>
+                    <div>
+                        <p className="text-secondary text-xs font-black uppercase tracking-widest opacity-60 mb-1">Öne Çıkan</p>
+                        <h3 className="text-4xl font-black text-white">{featuredVehicles}</h3>
                     </div>
                 </div>
-                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex items-center justify-between">
-                    <div>
-                        <p className="text-secondary text-xs font-bold uppercase tracking-wider">Pasif</p>
-                        <h3 className="text-2xl font-bold mt-1">{passiveVehicles}</h3>
+
+                <div className="admin-card col-span-12 md:col-span-6 lg:col-span-3 flex flex-col gap-6 group">
+                    <div className="flex items-center justify-between">
+                        <div className="size-12 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center border border-red-500/20 group-hover:bg-red-500 group-hover:text-white transition-all duration-300">
+                            <span className="material-symbols-outlined text-2xl font-black">pause_circle</span>
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-secondary opacity-40">Durduruldu</span>
                     </div>
-                    <div className="p-3 bg-red-500/10 text-red-500 rounded-lg">
-                        <span className="material-symbols-outlined">pause_circle</span>
+                    <div>
+                        <p className="text-secondary text-xs font-black uppercase tracking-widest opacity-60 mb-1">Pasif Kayıtlar</p>
+                        <h3 className="text-4xl font-black text-white">{passiveVehicles}</h3>
                     </div>
                 </div>
             </div>
