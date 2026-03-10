@@ -152,14 +152,20 @@ export default function LoginPage() {
                     </form>
                 </div>
 
-                {/* Footer Links */}
-                <div className="text-center space-y-4">
-                    <Link href="/" className="inline-flex items-center gap-2 text-secondary hover:text-white transition-colors text-sm font-medium">
-                        <span className="material-symbols-outlined text-sm">arrow_back</span>
-                        Web Sitesine Dön
-                    </Link>
-                    <p className="text-[10px] text-muted uppercase tracking-widest opacity-50">
-                        &copy; 2024 Huzur Otomotiv • Tüm Hakları Saklıdır
+                {/* Footer Note */}
+                <div style={{
+                    marginTop: '24px',
+                    paddingTop: '24px',
+                    borderTop: '1px solid var(--border-color)',
+                    textAlign: 'center'
+                }}>
+                    <p style={{
+                        fontSize: '11px',
+                        color: 'var(--text-secondary)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                    }}>
+                        Giriş bilgileriniz güvenli bir şekilde korunmaktadır
                     </p>
                 </div>
             </div>

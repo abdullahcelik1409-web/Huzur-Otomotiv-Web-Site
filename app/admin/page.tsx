@@ -214,37 +214,3 @@ export default function AdminDashboard() {
         </div>
     )
 }
-                                    <p className="text-[10px] text-secondary mt-1 uppercase">Az Önce</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-4">
-                                <div className="size-8 rounded-lg bg-white/5 flex items-center justify-center text-white shrink-0">
-                                    <span className="material-symbols-outlined text-sm">login</span>
-                                </div>
-                                <div>
-                                    <p className="text-xs font-bold">Yönetici girişi başarılı.</p>
-                                    <p className="text-[10px] text-secondary mt-1 uppercase">1 Saat Önce</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Quick Access */}
-                    <div className="admin-card bg-neon/5 border-neon/10">
-                        <h3 className="stat-label mb-4 lg:mb-5 text-neon">Hızlı Erişim</h3>
-                        <div className="grid grid-cols-2 gap-2 lg:gap-3">
-                            <Link href="/" className="p-3 lg:p-4 rounded-xl bg-black/50 border border-white/5 hover:border-neon transition-all text-center">
-                                <span className="material-symbols-outlined text-lg lg:text-xl mb-1 lg:mb-2 block">visibility</span>
-                                <p className="text-[8px] lg:text-[9px] font-black uppercase tracking-widest text-secondary">Siteye Git</p>
-                            </Link>
-                            <Link href="/admin/ilan-ekle" className="p-3 lg:p-4 rounded-xl bg-black/50 border border-white/5 hover:border-neon transition-all text-center">
-                                <span className="material-symbols-outlined text-lg lg:text-xl mb-1 lg:mb-2 block">add_task</span>
-                                <p className="text-[8px] lg:text-[9px] font-black uppercase tracking-widest text-secondary">Hızlı İlan</p>
-                            </Link>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-        </div>
-    )
-}

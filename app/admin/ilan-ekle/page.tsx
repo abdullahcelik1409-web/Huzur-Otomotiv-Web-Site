@@ -584,23 +584,13 @@ export default function AdminIlanEkle() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="btn-premium flex-1 !h-16 text-lg"
+                        className="btn btn-primary"
+                        style={{ flex: 1, height: '56px', fontSize: '14px' }}
                     >
-                        {loading ? (
-                            <div className="spinner !w-6 !h-6"></div>
-                        ) : (
-                            <div className="flex items-center gap-3">
-                                <span className="material-symbols-outlined font-black">verified</span>
-                                <span>İlanı Şimdi Yayınla</span>
-                            </div>
-                        )}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => router.back()}
-                        className="h-16 px-12 rounded-2xl bg-white/5 border border-white/10 font-bold uppercase tracking-widest text-xs hover:bg-white/10 transition-all text-secondary"
-                    >
-                        İptal Et
+                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                            {loading ? 'sync' : 'check'}
+                        </span>
+                        <span>{loading ? 'Yayınlanıyor...' : 'İlanı Yayınla'}</span>
                     </button>
                 </div>
             </form>
