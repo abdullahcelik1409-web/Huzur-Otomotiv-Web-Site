@@ -90,7 +90,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
 
             {/* Mobile Header */}
-            <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-black border-b border-white/5 flex items-center justify-between px-6 z-[110]">
+            <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-black border-b border-white/5 flex items-center justify-between px-4 z-[110]">
                 <div className="flex items-center gap-2">
                     <div className="size-8 bg-neon rounded-lg flex items-center justify-center text-black">
                         <span className="material-symbols-outlined text-lg font-black">directions_car</span>
@@ -103,17 +103,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 min-w-0 bg-black overflow-y-auto">
-                <header className="hidden lg:flex h-20 items-center justify-between px-12 border-b border-white/5 bg-black/50 backdrop-blur-md sticky top-0 z-40">
+            <main className="flex-1 min-w-0 bg-black overflow-y-auto w-full">
+                <header className="hidden lg:flex h-20 items-center justify-between px-8 lg:px-12 border-b border-white/5 bg-black/50 backdrop-blur-md sticky top-0 z-40">
                     <div className="flex items-center gap-4">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-secondary opacity-60">Sistem Yönetimi</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest opacity-60">Sistem Yönetimi</span>
                         <div className="h-4 w-px bg-white/10"></div>
                         <span className="text-xs font-bold text-neon uppercase">v2.0 Beta</span>
                     </div>
 
                     <div className="flex items-center gap-6">
                         <div className="text-right hidden sm:block">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-secondary opacity-50">Yönetici</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest opacity-50">Yönetici</p>
                             <p className="text-xs text-white font-bold">huzuroto.com</p>
                         </div>
                         <div className="size-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-neon shadow-inner">
@@ -122,7 +122,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </div>
                 </header>
 
-                <div className="p-8 lg:p-12 max-w-[1600px] mx-auto min-h-[calc(100vh-80px)]">
+                <div className="p-4 lg:p-8 xl:p-12 max-w-[1600px] mx-auto">
                     {children}
                 </div>
             </main>
