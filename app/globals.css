@@ -30,10 +30,13 @@
 }
 
 html,
-body {
+body,
+#__next {
   width: 100%;
+  max-width: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-main);
@@ -42,6 +45,10 @@ body {
   scroll-behavior: smooth;
   overflow-wrap: break-word;
   word-wrap: break-word;
+}
+
+main {
+  min-width: 0;
 }
 
 section {
@@ -58,7 +65,11 @@ ul {
   list-style: none;
 }
 
-img {
+img,
+picture,
+video,
+canvas,
+svg {
   max-width: 100%;
   height: auto;
   display: block;
@@ -95,12 +106,38 @@ h4,
 
 /* Premium Utilities */
 .container {
+<<<<<<< HEAD
   width: 100%;
   max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 2rem;
   padding-right: 2rem;
+=======
+  width: min(100%, 1400px);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+>>>>>>> f460d0d (Fix mobile overflow by making grid items and container responsive)
 }
 
 .pt-32 {
@@ -203,7 +240,11 @@ h1.section-title,
 
 .listings-grid {
   display: grid;
+<<<<<<< HEAD
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+=======
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+>>>>>>> f460d0d (Fix mobile overflow by making grid items and container responsive)
   gap: 2.5rem;
 }
 
