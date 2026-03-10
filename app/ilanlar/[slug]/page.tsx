@@ -269,6 +269,8 @@ export default function VehicleDetail() {
                     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
                     gap: 3rem;
                     width: 100%;
+                    max-width: 1100px;
+                    margin: 0 auto;
                 }
                 .main-image-container {
                     position: relative;
