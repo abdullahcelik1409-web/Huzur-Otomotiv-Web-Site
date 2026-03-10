@@ -12,6 +12,11 @@ export default function VehicleDetail() {
     const [isLightboxOpen, setIsLightboxOpen] = useState(false)
 
     useEffect(() => {
+        // Ensure page is reset to top (no leftover horizontal scroll) when showing details
+        window.scrollTo({ top: 0, left: 0 })
+    }, [])
+
+    useEffect(() => {
         // Prevent page shift/scroll when lightbox is open
         document.body.style.overflow = isLightboxOpen ? 'hidden' : ''
         return () => { document.body.style.overflow = '' }
@@ -569,9 +574,11 @@ export default function VehicleDetail() {
                         right: 1rem;
                     }
                     .lightbox-content {
-                        max-width: 95vw;
-                        max-height: 85vh;
-                        padding: 0.75rem;
+                        width: 100%;
+                        height: 100%;
+                        max-width: 100%;
+                        max-height: 100%;
+                        padding: 0;
                     }
                     .description-card {
                         padding: 1.25rem;
