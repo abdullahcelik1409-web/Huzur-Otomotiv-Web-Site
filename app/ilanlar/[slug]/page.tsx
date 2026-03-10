@@ -448,17 +448,20 @@ export default function VehicleDetail() {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 1.25rem;
+                    padding: 0;
                     overflow: hidden;
                 }
                 .lightbox-content {
                     position: relative;
-                    width: min(95vw, 1152px);
-                    max-height: 90vh;
+                    width: 100vw;
+                    max-width: 100vw;
+                    height: 100vh;
+                    max-height: 100vh;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     padding: 1rem;
+                    box-sizing: border-box;
                 }
 
                 .lightbox-close-btn {
