@@ -2,12 +2,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
 let _supabase: SupabaseClient | null = null;
 
-export const supabase = (() => {
-    if (typeof window === 'undefined') {
-        // SSR Safe dummy client
-        return {} as SupabaseClient;
-    }
-
+export function getSupabase(): SupabaseClient {
     if (!_supabase) {
         const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
         const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -19,4 +14,14 @@ export const supabase = (() => {
         _supabase = createClient(url, key);
     }
     return _supabase;
-})();
+}
+
+// Backward-compatible default export
+export const supabase = typeof window !== 'undefined'
+    ? getSupabase()
+    : (new Proxy({} as SupabaseClient, {
+        get: (_target, prop) => {
+            const client = getSupabase();
+            return (client as any)[prop];
+        }
+    }));
