@@ -61,8 +61,9 @@ export async function middleware(request: NextRequest) {
 
   // Protect /admin routes
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    // Allow login page
-    if (request.nextUrl.pathname === '/admin/login') {
+    // Allow login and register pages
+    const isAuthPage = request.nextUrl.pathname === '/admin/login' || request.nextUrl.pathname === '/admin/register'
+    if (isAuthPage) {
       return response
     }
 
