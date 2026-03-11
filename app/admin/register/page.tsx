@@ -12,12 +12,15 @@ export default function AdminRegister() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        console.log('Register attempt started...')
         setLoading(true)
         setMessage({ type: '', text: '' })
 
         const formData = new FormData(e.currentTarget)
         const email = formData.get('email') as string
         const password = formData.get('password') as string
+
+        console.log('Registering email:', email)
 
         try {
             const { error, data } = await supabase.auth.signUp({
@@ -28,19 +31,28 @@ export default function AdminRegister() {
                 }
             })
 
-            if (error) throw error
+            if (error) {
+                console.error('Supabase sign up error:', error)
+                throw error
+            }
+
+            console.log('Sign up result:', data)
 
             if (data.user && data.session) {
-                setMessage({ type: 'success', text: 'Hesap başarıyla oluşturuldu! Giriş sayfasına yönlendiriliyorsunuz...' })
+                setMessage({ type: 'success', text: 'Hesap başarıyla oluşturuldu! Yönlendiriliyorsunuz...' })
                 setTimeout(() => router.push('/admin/login'), 2000)
-            } else {
+            } else if (data.user) {
                 setMessage({ type: 'success', text: 'Kayıt başarılı! Lütfen e-postanızı onaylayın (veya doğrudan giriş yapmayı deneyin).' })
+            } else {
+                throw new Error('Kullanıcı oluşturulamadı fakat hata dönmedi.')
             }
 
         } catch (err: any) {
+            console.error('Registration failed:', err)
             setMessage({ type: 'error', text: err.message || 'Kayıt yapılamadı' })
         } finally {
             setLoading(false)
+            console.log('Register attempt finished.')
         }
     }
 
