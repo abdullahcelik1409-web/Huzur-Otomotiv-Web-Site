@@ -8,19 +8,19 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     const headersList = await headers()
     const pathname = headersList.get('x-pathname') || ''
     
-    // We allow /admin/login to bypass the admin check
-    const isLoginPage = pathname === '/admin/login'
+    // We allow /admin/login and /admin/register to bypass the admin check
+    const isAuthPage = pathname === '/admin/login' || pathname === '/admin/register'
 
     // Check for admin status on the server
     const admin = await isAdmin()
 
-    if (!admin && !isLoginPage) {
-        // If not admin and not on login page, redirect to login
+    if (!admin && !isAuthPage) {
+        // If not admin and not on login or register page, redirect to login
         redirect('/admin/login')
     }
 
-    if (admin && isLoginPage) {
-        // If already admin and on login page, redirect to dashboard
+    if (admin && isAuthPage) {
+        // If already admin and on auth page, redirect to dashboard
         redirect('/admin')
     }
 
