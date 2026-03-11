@@ -25,8 +25,9 @@ export default function AdminLogin() {
                     } else {
                         setMessage({ 
                             type: 'error', 
-                            text: 'Giriş yetkiniz yok. Sadece admin personeli erişebilir.' 
+                            text: 'Admin yetkiniz yok. Ana sayfaya yönlendiriliyorsunuz...' 
                         })
+                        setTimeout(() => router.push('/'), 1500)
                     }
                 }
             }
@@ -65,8 +66,15 @@ export default function AdminLogin() {
                 throw new Error(syncError.error || 'Profil senkronizasyonu başarısız oldu')
             }
 
-            setMessage({ type: 'success', text: 'Giriş başarılı! Profil doğrulandı, yönlendiriliyorsunuz...' })
-            setTimeout(() => router.push('/admin'), 1000)
+            const syncData = await syncRes.json()
+
+            if (syncData.profile?.isAdmin) {
+                setMessage({ type: 'success', text: 'Giriş başarılı! Profil doğrulandı, yönlendiriliyorsunuz...' })
+                setTimeout(() => router.push('/admin'), 1000)
+            } else {
+                setMessage({ type: 'error', text: 'Admin yetkiniz bulunmamaktadır. Ana siteye yönlendiriliyorsunuz...' })
+                setTimeout(() => router.push('/'), 1500)
+            }
 
         } catch (err: any) {
             setMessage({ type: 'error', text: err.message || 'Giriş yapılamadı' })
