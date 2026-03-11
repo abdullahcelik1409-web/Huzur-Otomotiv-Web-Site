@@ -1,38 +1,14 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
-export default function AdminLogin() {
+export default function AdminRegister() {
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState({ type: '', text: '' })
     const router = useRouter()
-
-    // Check if the user is already logged in but not an admin
-    // This is useful because AdminLayout redirects !admin here.
-    useEffect(() => {
-        const checkExistingAuth = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
-            if (user) {
-                // If user is logged in, check if they have a profile and are admin
-                const syncRes = await fetch('/api/auth/sync', { method: 'POST' })
-                if (syncRes.ok) {
-                    const data = await syncRes.json()
-                    if (data.profile?.isAdmin) {
-                        router.push('/admin')
-                    } else {
-                        setMessage({ 
-                            type: 'error', 
-                            text: 'Giriş yetkiniz yok. Sadece admin personeli erişebilir.' 
-                        })
-                    }
-                }
-            }
-        }
-        checkExistingAuth()
-    }, [router])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -44,32 +20,25 @@ export default function AdminLogin() {
         const password = formData.get('password') as string
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({
+            const { error, data } = await supabase.auth.signUp({
                 email,
-                password
+                password,
+                options: {
+                   emailRedirectTo: `${window.location.origin}/admin/login`
+                }
             })
 
             if (error) throw error
 
-            // Oturumun tarayıcıya yazılması için çok kısa bir bekleme
-            await new Promise(resolve => setTimeout(resolve, 500))
-
-            // Profili senkronize et (ve ilk kullanıcıysa admin yap)
-            const syncRes = await fetch('/api/auth/sync', { method: 'POST' })
-            
-            if (!syncRes.ok) {
-                const syncError = await syncRes.json()
-                console.error('Sync failed:', syncError)
-                // Senkronizasyon başarısız olsa bile kullanıcıyı yönlendirmeyi deneyebiliriz 
-                // ya da hata verebiliriz. Güvenlik için yönlendirmeden önce hata verelim.
-                throw new Error(syncError.error || 'Profil senkronizasyonu başarısız oldu')
+            if (data.user && data.session) {
+                setMessage({ type: 'success', text: 'Hesap başarıyla oluşturuldu! Giriş sayfasına yönlendiriliyorsunuz...' })
+                setTimeout(() => router.push('/admin/login'), 2000)
+            } else {
+                setMessage({ type: 'success', text: 'Kayıt başarılı! Lütfen e-postanızı onaylayın (veya doğrudan giriş yapmayı deneyin).' })
             }
 
-            setMessage({ type: 'success', text: 'Giriş başarılı! Profil doğrulandı, yönlendiriliyorsunuz...' })
-            setTimeout(() => router.push('/admin'), 1000)
-
         } catch (err: any) {
-            setMessage({ type: 'error', text: err.message || 'Giriş yapılamadı' })
+            setMessage({ type: 'error', text: err.message || 'Kayıt yapılamadı' })
         } finally {
             setLoading(false)
         }
@@ -107,7 +76,7 @@ export default function AdminLogin() {
                         color: 'var(--accent-neon)',
                         fontSize: '32px'
                     }}>
-                        <span className="material-symbols-outlined">admin_panel_settings</span>
+                        <span className="material-symbols-outlined">person_add</span>
                     </div>
                     <h1 style={{
                         fontSize: '24px',
@@ -115,15 +84,20 @@ export default function AdminLogin() {
                         color: 'var(--text-primary)',
                         marginBottom: '8px'
                     }}>
-                        Admin <span style={{ color: 'var(--accent-neon)' }}>Giriş</span>
+                        Yeni <span style={{ color: 'var(--accent-neon)' }}>Kayıt</span>
                     </h1>
                     <p style={{
                         fontSize: '14px',
                         color: 'var(--text-secondary)',
                         lineHeight: '1.5'
                     }}>
-                        Yönetim paneline erişmek için giriş yapın
+                        Güvenlik testi için yeni bir hesap oluşturun
                     </p>
+                    <div style={{ marginTop: '8px' }}>
+                        <span style={{ fontSize: '12px', color: 'var(--accent-neon)', background: 'rgba(186, 255, 41, 0.1)', padding: '4px 8px', borderRadius: '4px' }}>
+                            Test Amaçlıdır
+                        </span>
+                    </div>
                 </div>
 
                 {/* Message Alert */}
@@ -144,7 +118,7 @@ export default function AdminLogin() {
                     </div>
                 )}
 
-                {/* Login Form */}
+                {/* Register Form */}
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     <div className="form-group">
                         <label className="form-label">E-posta Adresi</label>
@@ -152,10 +126,9 @@ export default function AdminLogin() {
                             name="email"
                             type="email"
                             className="input-base"
-                            placeholder="admin@huzurotomotiv.com"
+                            placeholder="test@huzurotomotiv.com"
                             required
                             disabled={loading}
-                            autoComplete="email"
                         />
                     </div>
 
@@ -168,7 +141,7 @@ export default function AdminLogin() {
                             placeholder="••••••••"
                             required
                             disabled={loading}
-                            autoComplete="current-password"
+                            minLength={6}
                         />
                     </div>
 
@@ -184,19 +157,19 @@ export default function AdminLogin() {
                         }}
                     >
                         <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-                            {loading ? 'sync' : 'login'}
+                            {loading ? 'sync' : 'how_to_reg'}
                         </span>
-                        <span>{loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}</span>
+                        <span>{loading ? 'Kayıt yapılıyor...' : 'Hesap Oluştur'}</span>
                     </button>
-
-                    <Link href="/admin/register" style={{ 
+                    
+                    <Link href="/admin/login" style={{ 
                         textAlign: 'center', 
                         fontSize: '13px', 
                         color: 'var(--text-secondary)',
                         textDecoration: 'none',
                         marginTop: '8px'
                     }}>
-                        Güvenlik testi için <span style={{ color: 'var(--accent-neon)' }}>Yeni Hesap Oluştur</span>
+                        Zaten bir hesabınız mı var? <span style={{ color: 'var(--accent-neon)' }}>Giriş Yap</span>
                     </Link>
                 </form>
 
@@ -212,7 +185,7 @@ export default function AdminLogin() {
                         color: 'var(--text-secondary)',
                         lineHeight: '1.5'
                     }}>
-                        © 2024 Huzur Otomotiv. Tüm hakları saklıdır.
+                        Bu sayfa sadece güvenlik testi içindir.
                     </p>
                 </div>
             </div>
