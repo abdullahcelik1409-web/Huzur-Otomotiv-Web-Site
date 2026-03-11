@@ -1,179 +1,28 @@
-'use client'
-
-import { useState, useEffect } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
-import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { isAdmin } from '@/lib/auth'
+import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
+import AdminLayoutClient from '@/components/AdminLayoutClient'
 import './admin.css'
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-    const [authenticated, setAuthenticated] = useState<boolean | null>(null)
-    const [sidebarOpen, setSidebarOpen] = useState(false)
-    const router = useRouter()
-    const pathname = usePathname()
-
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+    const headersList = await headers()
+    const pathname = headersList.get('x-invoke-path') || ''
+    
+    // We allow /admin/login to bypass the admin check
     const isLoginPage = pathname === '/admin/login'
 
-    useEffect(() => {
-        if (isLoginPage) {
-            setAuthenticated(true)
-            return
-        }
+    // Check for admin status on the server
+    const admin = await isAdmin()
 
-        const checkAuth = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
-            if (!session) {
-                router.push('/admin/login')
-                setAuthenticated(false)
-            } else {
-                setAuthenticated(true)
-            }
-        }
-        checkAuth()
-    }, [pathname, isLoginPage, router])
-
-    const handleLogout = async () => {
-        await supabase.auth.signOut()
-        router.push('/admin/login')
+    if (!admin && !isLoginPage) {
+        // If not admin and not on login page, redirect to login
+        redirect('/admin/login')
     }
 
-    if (isLoginPage) return <>{children}</>
-
-    if (authenticated === null) {
-        return (
-            <div className="admin-loading">
-                <div className="spinner"></div>
-                <span>Yükleniyor...</span>
-            </div>
-        )
+    if (admin && isLoginPage) {
+        // If already admin and on login page, redirect to dashboard
+        redirect('/admin')
     }
 
-    const navItems = [
-        { name: 'Dashboard', href: '/admin', icon: 'dashboard' },
-        { name: 'İlan Ekle', href: '/admin/ilan-ekle', icon: 'add_circle' },
-    ]
-
-    return (
-        <div className="admin-layout">
-            {/* Desktop Sidebar */}
-            <aside className="sidebar-container">
-                <div className="sidebar-logo">
-                    <div className="sidebar-logo-icon">
-                        <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
-                            directions_car
-                        </span>
-                    </div>
-                    <div className="sidebar-logo-text">
-                        HUZUR <span className="neon">OTO</span>
-                    </div>
-                </div>
-
-                <nav className="sidebar-nav">
-                    {navItems.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className={`nav-item ${pathname === item.href ? 'active' : ''}`}
-                        >
-                            <span className="material-symbols-outlined">{item.icon}</span>
-                            <span>{item.name}</span>
-                        </Link>
-                    ))}
-                </nav>
-
-                <div className="sidebar-footer">
-                    <button onClick={handleLogout} className="logout-btn">
-                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
-                            logout
-                        </span>
-                        <span>Çıkış</span>
-                    </button>
-                </div>
-            </aside>
-
-            {/* Mobile Top Bar */}
-            <div className="mobile-top-bar">
-                <div className="mobile-logo">
-                    <div style={{
-                        width: '28px',
-                        height: '28px',
-                        background: 'var(--accent-neon)',
-                        borderRadius: '6px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'black',
-                        fontSize: '16px',
-                        fontWeight: 900
-                    }}>
-                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
-                            directions_car
-                        </span>
-                    </div>
-                    <span>HUZUR <span style={{ color: 'var(--accent-neon)' }}>OTO</span></span>
-                </div>
-                <button
-                    className="mobile-menu-toggle"
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
-                    aria-label="Toggle Menu"
-                >
-                    <span className="material-symbols-outlined">
-                        {sidebarOpen ? 'close' : 'menu'}
-                    </span>
-                </button>
-            </div>
-
-            {/* Mobile Sidebar Overlay */}
-            {sidebarOpen && (
-                <div className="sidebar-overlay active">
-                    <button
-                        onClick={() => setSidebarOpen(false)}
-                        style={{
-                            position: 'absolute',
-                            top: '16px',
-                            right: '16px',
-                            background: 'none',
-                            border: 'none',
-                            color: 'var(--accent-neon)',
-                            fontSize: '28px',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        <span className="material-symbols-outlined">close</span>
-                    </button>
-                    <nav style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className={`nav-item ${pathname === item.href ? 'active' : ''}`}
-                                onClick={() => setSidebarOpen(false)}
-                            >
-                                <span className="material-symbols-outlined">{item.icon}</span>
-                                <span>{item.name}</span>
-                            </Link>
-                        ))}
-                    </nav>
-                    <button
-                        onClick={() => {
-                            handleLogout()
-                            setSidebarOpen(false)
-                        }}
-                        className="logout-btn"
-                        style={{ marginTop: '32px' }}
-                    >
-                        <span className="material-symbols-outlined">logout</span>
-                        <span>Güvenli Çıkış</span>
-                    </button>
-                </div>
-            )}
-
-            {/* Main Content */}
-            <main>
-                <div className="admin-content">
-                    {children}
-                </div>
-            </main>
-        </div>
-    )
+    return <AdminLayoutClient>{children}</AdminLayoutClient>
 }

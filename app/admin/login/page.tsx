@@ -26,6 +26,9 @@ export default function AdminLogin() {
 
             if (error) throw error
 
+            // Profili senkronize et (ve ilk kullanıcıysa admin yap)
+            await fetch('/api/auth/sync', { method: 'POST' })
+
             setMessage({ type: 'success', text: 'Giriş başarılı! Yönlendiriliyorsunuz...' })
             setTimeout(() => router.push('/admin'), 1500)
 

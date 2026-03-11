@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { isAdmin } from '@/lib/auth'
 
 // GET: Tüm araçları listele (Admin için)
 export async function GET(request: NextRequest) {
@@ -16,11 +16,9 @@ export async function GET(request: NextRequest) {
             )
         }
 
-        // Oturum kontrolü
-        const { data: { session } } = await supabase.auth.getSession()
-        if (!session) {
-            // Not: Geliştirme aşamasında kolaylık için veya middleware ile korunuyorsa burası esnetilebilir
-            // Şimdilik güvenli tutuyoruz
+        // Admin yetkisi kontrolü
+        if (!(await isAdmin())) {
+            return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 401 })
         }
 
         const vehicles = await prisma.vehicle.findMany({
@@ -36,13 +34,9 @@ export async function GET(request: NextRequest) {
 // POST: Yeni araç ekle
 export async function POST(request: NextRequest) {
     try {
-        // Database URL kontrolü
-        if (!process.env.DATABASE_URL) {
-            console.error('DATABASE_URL env variable is missing!')
-            return NextResponse.json(
-                { error: 'Veritabanı bağlantısı yapılandırılmamış' },
-                { status: 503 }
-            )
+        // Admin yetkisi kontrolü
+        if (!(await isAdmin())) {
+            return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 401 })
         }
 
         const body = await request.json()

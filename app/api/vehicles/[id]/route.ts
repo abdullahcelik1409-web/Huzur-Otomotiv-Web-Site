@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { isAdmin } from '@/lib/auth'
 
 // GET: Tek bir aracı getir
 export async function GET(
@@ -34,10 +34,9 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        // Auth kontrolü
-        const { data: { session } } = await supabase.auth.getSession()
-        if (!session) {
-            // Middleware veya Auth kontrolü eklenebilir
+        // Admin yetkisi kontrolü
+        if (!(await isAdmin())) {
+            return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 401 })
         }
 
         const { id } = await params
@@ -60,6 +59,11 @@ export async function PATCH(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // Admin yetkisi kontrolü
+        if (!(await isAdmin())) {
+            return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 401 })
+        }
+
         const { id } = await params
         const vehicleId = parseInt(id, 10)
         const body = await request.json()
