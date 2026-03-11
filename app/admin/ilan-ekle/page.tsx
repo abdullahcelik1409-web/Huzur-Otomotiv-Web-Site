@@ -1,17 +1,60 @@
-'use client'
-
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
 export default function AdminIlanEkle() {
     const [loading, setLoading] = useState(false)
+    const [fetching, setFetching] = useState(false)
     const [message, setMessage] = useState({ type: '', text: '' })
     const [files, setFiles] = useState<File[]>([])
     const [previews, setPreviews] = useState<string[]>([])
+    const [existingImages, setExistingImages] = useState<string[]>([])
     const [isFeatured, setIsFeatured] = useState(false)
     const [currentStep, setCurrentStep] = useState(1)
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const editId = searchParams.get('id')
+    const [formDataState, setFormDataState] = useState<any>({
+        title: '',
+        brand: '',
+        model: '',
+        year: '',
+        km: '',
+        price: '',
+        description: ''
+    })
+
+    useEffect(() => {
+        if (editId) {
+            setFetching(true)
+            fetch(`/api/vehicles/${editId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const vehicle = data.vehicle || data
+                    if (vehicle) {
+                        setFormDataState({
+                            title: vehicle.title || '',
+                            brand: vehicle.brand || '',
+                            model: vehicle.model || '',
+                            year: vehicle.year?.toString() || '',
+                            km: vehicle.km?.toString() || '',
+                            price: vehicle.price?.toString() || '',
+                            description: vehicle.description || ''
+                        })
+                        setIsFeatured(!!vehicle.featured)
+                        setExistingImages(vehicle.images || [])
+                        setPreviews(vehicle.images || [])
+                    }
+                })
+                .catch(err => console.error('Error fetching vehicle for edit:', err))
+                .finally(() => setFetching(false))
+        }
+    }, [editId])
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target
+        setFormDataState((prev: any) => ({ ...prev, [name]: value }))
+    }
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -24,8 +67,16 @@ export default function AdminIlanEkle() {
     }
 
     const removeFile = (index: number) => {
-        setFiles(prev => prev.filter((_, i) => i !== index))
-        setPreviews(prev => prev.filter((_, i) => i !== index))
+        if (index < existingImages.length) {
+            // Removing an existing image
+            setExistingImages(prev => prev.filter((_, i) => i !== index))
+            setPreviews(prev => prev.filter((_, i) => i !== index))
+        } else {
+            // Removing a newly uploaded image
+            const fileIndex = index - existingImages.length
+            setFiles(prev => prev.filter((_, i) => i !== fileIndex))
+            setPreviews(prev => prev.filter((_, i) => i !== index))
+        }
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,11 +93,11 @@ export default function AdminIlanEkle() {
         })
 
         try {
-            if (!files.length) {
+            if (!files.length && !existingImages.length) {
                 throw new Error('En az bir resim seçmeniz gerekiyor')
             }
 
-            const uploadedUrls = []
+            const uploadedUrls = [...existingImages]
             for (const file of files) {
                 const fileExt = file.name.split('.').pop()
                 const fileName = `${Math.random()}.${fileExt}`
@@ -78,8 +129,8 @@ export default function AdminIlanEkle() {
                 status: 'active'
             }
 
-            const res = await fetch('/api/vehicles', {
-                method: 'POST',
+            const res = await fetch(editId ? `/api/vehicles/${editId}` : '/api/vehicles', {
+                method: editId ? 'PATCH' : 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(finalData)
             })
@@ -89,7 +140,7 @@ export default function AdminIlanEkle() {
                 throw new Error(errorData.error || 'İlan kaydedilemedi')
             }
 
-            setMessage({ type: 'success', text: 'İlan başarıyla oluşturuldu! Yönlendiriliyorsunuz...' })
+            setMessage({ type: 'success', text: editId ? 'İlan başarıyla güncellendi! Yönlendiriliyorsunuz...' : 'İlan başarıyla oluşturuldu! Yönlendiriliyorsunuz...' })
             setTimeout(() => router.push('/admin'), 2000)
 
         } catch (err: any) {
@@ -111,8 +162,8 @@ export default function AdminIlanEkle() {
             {/* Header */}
             <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
-                    <h1 className="section-title">Yeni <span className="neon">İlan Ekle</span></h1>
-                    <p className="section-subtitle">Araç detaylarını adım adım girerek yeni bir ilan yayınlayın.</p>
+                    <h1 className="section-title">{editId ? 'İlanı' : 'Yeni'} <span className="neon">{editId ? 'Düzenle' : 'İlan Ekle'}</span></h1>
+                    <p className="section-subtitle">{editId ? 'Araç bilgilerini güncelleyin.' : 'Araç detaylarını adım adım girerek yeni bir ilan yayınlayın.'}</p>
                 </div>
                 <button
                     onClick={() => router.back()}
@@ -227,7 +278,9 @@ export default function AdminIlanEkle() {
                                     className="input-base"
                                     placeholder="Örn: 2023 Mercedes-Benz Sprinter"
                                     required
-                                    disabled={loading}
+                                    disabled={loading || fetching}
+                                    value={formDataState.title}
+                                    onChange={handleInputChange}
                                 />
                             </div>
 
@@ -240,7 +293,9 @@ export default function AdminIlanEkle() {
                                         className="input-base"
                                         placeholder="Örn: Mercedes-Benz"
                                         required
-                                        disabled={loading}
+                                        disabled={loading || fetching}
+                                        value={formDataState.brand}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -251,7 +306,9 @@ export default function AdminIlanEkle() {
                                         className="input-base"
                                         placeholder="Örn: Sprinter"
                                         required
-                                        disabled={loading}
+                                        disabled={loading || fetching}
+                                        value={formDataState.model}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                             </div>
@@ -265,7 +322,9 @@ export default function AdminIlanEkle() {
                                         className="input-base"
                                         placeholder="2023"
                                         required
-                                        disabled={loading}
+                                        disabled={loading || fetching}
+                                        value={formDataState.year}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -276,7 +335,9 @@ export default function AdminIlanEkle() {
                                         className="input-base"
                                         placeholder="0"
                                         required
-                                        disabled={loading}
+                                        disabled={loading || fetching}
+                                        value={formDataState.km}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -287,7 +348,9 @@ export default function AdminIlanEkle() {
                                         className="input-base"
                                         placeholder="1250000"
                                         required
-                                        disabled={loading}
+                                        disabled={loading || fetching}
+                                        value={formDataState.price}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                             </div>
@@ -486,7 +549,9 @@ export default function AdminIlanEkle() {
                                     className="textarea-base"
                                     placeholder="Araç hakkında detaylı bilgi girin..."
                                     required
-                                    disabled={loading}
+                                    disabled={loading || fetching}
+                                    value={formDataState.description}
+                                    onChange={handleInputChange}
                                 />
                             </div>
 
@@ -552,7 +617,7 @@ export default function AdminIlanEkle() {
                                     disabled={loading}
                                 >
                                     <span className="material-symbols-outlined">{loading ? 'sync' : 'check'}</span>
-                                    <span>{loading ? 'Yayınlanıyor...' : 'İlanı Yayınla'}</span>
+                                    <span>{loading ? 'Yayınlanıyor...' : (editId ? 'İlanı Güncelle' : 'İlanı Yayınla')}</span>
                                 </button>
                             </div>
                         </div>

@@ -3,11 +3,12 @@ import './VehicleDetail.css'
 
 export const dynamic = 'force-dynamic'
 
-export default async function VehicleDetailDemo({ searchParams }: { searchParams: { id?: string } }) {
-    const vehicleId = searchParams?.id
+export default async function VehicleDetailDemo({ searchParams }: { searchParams: Promise<{ id?: string }> }) {
+    const params = await searchParams
+    const vehicleId = params?.id
     const id = vehicleId ? parseInt(vehicleId, 10) : NaN
 
-    if (!id) {
+    if (!id || isNaN(id)) {
         return (
             <div className="pt-32 text-center">
                 <p>Araç bulunamadı.</p>

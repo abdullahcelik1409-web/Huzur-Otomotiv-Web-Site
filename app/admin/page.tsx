@@ -190,7 +190,7 @@ export default function AdminDashboard() {
                                 <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
                                     <button
                                         className="btn btn-secondary btn-small"
-                                        onClick={() => router.push(`/ilan/demo?id=${v.id}`)}
+                                        onClick={() => router.push(`/admin/ilan-ekle?id=${v.id}`)}
                                         title="Düzenle"
                                     >
                                         <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>edit</span>

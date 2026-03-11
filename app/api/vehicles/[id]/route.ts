@@ -4,6 +4,30 @@ import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
+// GET: Tek bir aracı getir
+export async function GET(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        const { id } = await params
+        const vehicleId = parseInt(id, 10)
+
+        const vehicle = await prisma.vehicle.findUnique({
+            where: { id: vehicleId }
+        })
+
+        if (!vehicle) {
+            return NextResponse.json({ error: 'Araç bulunamadı' }, { status: 404 })
+        }
+
+        return NextResponse.json({ success: true, vehicle })
+    } catch (error) {
+        console.error('Get vehicle error:', error)
+        return NextResponse.json({ error: 'Araç bilgileri alınamadı' }, { status: 500 })
+    }
+}
+
 // DELETE: Aracı sil
 export async function DELETE(
     request: NextRequest,
