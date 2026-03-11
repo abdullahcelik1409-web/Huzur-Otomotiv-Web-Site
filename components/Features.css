@@ -26,8 +26,8 @@
 
 .feature-card:hover {
     transform: translateY(-15px);
-    border-color: var(--accent-neon);
-    box-shadow: 0 20px 50px rgba(204, 255, 0, 0.15);
+    border-color: var(--accent-green);
+    box-shadow: 0 20px 50px rgba(116, 194, 71, 0.15);
 }
 
 .feature-icon {
@@ -38,6 +38,7 @@
     background: var(--accent-neon-muted);
     border-radius: 50%;
     line-height: 1;
+    color: var(--accent-green);
 }
 
 .feature-title {

@@ -1,26 +1,31 @@
 :root {
-  /* Color Palette - Premium Dark & Neon Green */
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #141414;
-  --bg-tertiary: #1e1e1e;
+  /* Brand Color Palette - Huzur Otomotiv Green & Blue */
+  --bg-primary: #080a0c;
+  --bg-secondary: #0f141a;
+  --bg-tertiary: #161d26;
 
-  --accent-neon: #ccff00;
-  /* Iconic Huzur Neon Green */
-  --accent-neon-hover: #b3e600;
-  --accent-neon-muted: rgba(204, 255, 0, 0.1);
+  --accent-green: #74c247;
+  --accent-blue: #2b59c3;
+  --accent-neon: var(--accent-green); /* For compatibility */
+  --accent-neon-hover: #63b33a;
+  --accent-neon-muted: rgba(116, 194, 71, 0.1);
+
+  --btn-gradient: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-blue) 100%);
+  --btn-gradient-hover: linear-gradient(135deg, #63b33a 0%, #1e4bb2 100%);
 
   --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --text-muted: #666666;
+  --text-secondary: #a0aec0;
+  --text-muted: #718096;
 
-  --border-color: #2a2a2a;
-  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  --neon-glow: 0 0 20px rgba(204, 255, 0, 0.2);
+  --border-color: #242e3a;
+  --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  --neon-glow: 0 5px 20px rgba(116, 194, 71, 0.2);
+  --brand-glow: 0 5px 25px rgba(43, 89, 195, 0.25);
 
   --font-main: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-display: var(--font-outfit), var(--font-main);
 
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -167,24 +172,27 @@ h1.section-title,
 }
 
 .neon-btn {
-  background: var(--accent-neon);
-  color: var(--bg-primary);
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
+  background: var(--btn-gradient);
+  color: #ffffff;
+  padding: 0.9rem 1.8rem;
+  border-radius: 12px;
   font-weight: 700;
   border: none;
   cursor: pointer;
   transition: var(--transition-smooth);
-  box-shadow: var(--neon-glow);
+  box-shadow: var(--brand-glow);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
 }
 
 .neon-btn:hover {
-  background: var(--accent-neon-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(204, 255, 0, 0.4);
+  background: var(--btn-gradient-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 40px rgba(43, 89, 195, 0.4);
 }
 
 .section-title {
@@ -198,9 +206,10 @@ h1.section-title,
   position: absolute;
   bottom: -10px;
   left: 0;
-  width: 50px;
+  width: 60px;
   height: 4px;
-  background: var(--accent-neon);
+  background: var(--btn-gradient);
+  border-radius: 2px;
 }
 
 .cta-card {
