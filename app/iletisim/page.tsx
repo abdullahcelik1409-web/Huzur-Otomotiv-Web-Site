@@ -26,7 +26,7 @@ export default function Iletisim() {
                                 </div>
                                 <div className="item-content">
                                     <h3>Adres</h3>
-                                    <p>Feyzullah Mah. Maltepe Plaza No:123 Maltepe, İstanbul</p>
+                                    <p>Zümrütevler, Dost Sk. No:3, 34852 Maltepe/İstanbul</p>
                                 </div>
                             </div>
 
@@ -101,10 +101,17 @@ export default function Iletisim() {
 
                 {/* Map Section */}
                 <section className="mt-20 reveal stagger-3">
-                    <div className="info-card" style={{ padding: '0', overflow: 'hidden', height: '400px' }}>
-                        <div className="flex items-center justify-center h-full bg-tertiary">
-                            <p className="text-secondary">Google Haritalar Entegrasyonu Bu Alanda Yer Alacaktır</p>
-                        </div>
+                    <div className="info-card map-wrapper" style={{ padding: '0', overflow: 'hidden', height: '450px' }}>
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3014.181816782298!2d29.13524967657922!3d40.92244247136261!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac46d0e8220f7%3A0xc6cb143c683b5f0!2sHuzur%20Otomotiv!5e0!3m2!1str!2str!4v1710168000000!5m2!1str!2str" 
+                            width="100%" 
+                            height="100%" 
+                            style={{ border: 0 }} 
+                            allowFullScreen={true} 
+                            loading="lazy" 
+                            referrerPolicy="no-referrer-when-downgrade"
+                            className="google-map"
+                        ></iframe>
                     </div>
                 </section>
             </div>
