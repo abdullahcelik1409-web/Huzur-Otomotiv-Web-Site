@@ -16,10 +16,7 @@ export async function GET(request: NextRequest) {
             )
         }
 
-        // Admin yetkisi kontrolü
-        if (!(await isAdmin())) {
-            return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 401 })
-        }
+        // Herkesin araçları görebilmesi için yetkisi kontrolü kaldırıldı
 
         const vehicles = await prisma.vehicle.findMany({
             orderBy: { createdAt: 'desc' }
