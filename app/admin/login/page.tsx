@@ -26,11 +26,22 @@ export default function AdminLogin() {
 
             if (error) throw error
 
-            // Profili senkronize et (ve ilk kullanıcıysa admin yap)
-            await fetch('/api/auth/sync', { method: 'POST' })
+            // Oturumun tarayıcıya yazılması için çok kısa bir bekleme
+            await new Promise(resolve => setTimeout(resolve, 500))
 
-            setMessage({ type: 'success', text: 'Giriş başarılı! Yönlendiriliyorsunuz...' })
-            setTimeout(() => router.push('/admin'), 1500)
+            // Profili senkronize et (ve ilk kullanıcıysa admin yap)
+            const syncRes = await fetch('/api/auth/sync', { method: 'POST' })
+            
+            if (!syncRes.ok) {
+                const syncError = await syncRes.json()
+                console.error('Sync failed:', syncError)
+                // Senkronizasyon başarısız olsa bile kullanıcıyı yönlendirmeyi deneyebiliriz 
+                // ya da hata verebiliriz. Güvenlik için yönlendirmeden önce hata verelim.
+                throw new Error(syncError.error || 'Profil senkronizasyonu başarısız oldu')
+            }
+
+            setMessage({ type: 'success', text: 'Giriş başarılı! Profil doğrulandı, yönlendiriliyorsunuz...' })
+            setTimeout(() => router.push('/admin'), 1000)
 
         } catch (err: any) {
             setMessage({ type: 'error', text: err.message || 'Giriş yapılamadı' })

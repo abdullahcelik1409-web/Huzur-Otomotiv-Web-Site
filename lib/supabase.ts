@@ -1,4 +1,5 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
+import { SupabaseClient } from '@supabase/supabase-js'
 
 let _supabase: SupabaseClient | null = null;
 
@@ -11,7 +12,7 @@ export function getSupabase(): SupabaseClient {
             console.warn('Supabase env variables missing');
             return {} as SupabaseClient;
         }
-        _supabase = createClient(url, key);
+        _supabase = createBrowserClient(url, key);
     }
     return _supabase;
 }

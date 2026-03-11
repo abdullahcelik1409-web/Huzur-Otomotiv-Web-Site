@@ -5,11 +5,17 @@ import { createClient } from '@/lib/supabase-server'
 export async function POST(request: NextRequest) {
     try {
         const supabase = await createClient()
-        const { data: { user } } = await supabase.auth.getUser()
+        const { data: { user }, error: userError } = await supabase.auth.getUser()
 
-        if (!user) {
-            return NextResponse.json({ error: 'Oturum bulunamadı' }, { status: 401 })
+        if (userError || !user) {
+            console.error('Auth check failed:', userError)
+            return NextResponse.json({ 
+                error: 'Oturum bulunamadı veya oturum süresi dolmuş. Lütfen tekrar giriş yapın.',
+                details: userError?.message
+            }, { status: 401 })
         }
+
+        console.log('Syncing profile for user:', user.email)
 
         // Profili kontrol et veya oluştur
         let profile = await prisma.profile.findUnique({
