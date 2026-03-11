@@ -8,6 +8,9 @@ export async function middleware(request: NextRequest) {
     },
   })
 
+  // Set the current path in headers so server components can access it
+  response.headers.set('x-pathname', request.nextUrl.pathname)
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -60,9 +63,6 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/admin')) {
     // Allow login page
     if (request.nextUrl.pathname === '/admin/login') {
-      if (user) {
-        return NextResponse.redirect(new URL('/admin', request.url))
-      }
       return response
     }
 
